@@ -1,19 +1,32 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
-import { logoUrl } from "../../../constants/constants.ts";
+import { useMediaQuery } from 'react-responsive';
 
 const Header: React.FC = () => {
+    const isSmallScreen = useMediaQuery({ maxWidth: 575.98 });
+    const logoUrl = import.meta.env.VITE_LOGO as string;
+    const fontImport = `
+    @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Satisfy&family=Shrikhand&display=swap');
+  `;
     return (
-        <header className="flex flex-col xl:flex-row items-center justify-between px-4 py-4 text-stone-950 space-y-4 xl:space-y-0">
+        <header
+            className="flex flex-col xl:flex-row items-center justify-between px-4 py-4 text-stone-950 space-y-4 xl:space-y-0">
             {/* Logo y H1 */}
-            <div className="flex items-center space-x-4 w-full xl:w-auto">
-                <img src={logoUrl} alt="Logo" className="w-24 md:w-32 lg:w-40 h-auto" />
-                <h1 className="text-lg md:text-2xl lg:text-3xl">PONER ALGUNA FRASE</h1>
+            <style>
+                {fontImport}
+            </style>
+            <div className={`flex items-center ${isSmallScreen ? 'flex-col space-y-4' : 'space-x-4'} w-full xl:w-auto`}>
+                <img src={logoUrl} alt="Logo" className="w-24 md:w-32 lg:w-40 h-auto"/>
+                <h1 className="text-lg md:text-xl lg:text-3xl"
+                    style={{fontFamily: 'Shrikhand'}}>
+                    Bienvenidos a Tecito Store
+                </h1>
             </div>
 
             {/* Elementos a la derecha */}
-            <div className="flex flex-col md:flex-row xl:flex-row items-center justify-center md:justify-center xl:justify-between space-y-2 md:space-y-0 md:space-x-2 xl:space-y-0 w-full xl:w-auto">
+            <div
+                className="flex flex-col md:flex-row xl:flex-row items-center justify-center md:justify-center xl:justify-between space-y-2 md:space-y-0 md:space-x-2 xl:space-y-0 w-full xl:w-auto">
                 {/* Buscador de productos */}
                 <div className="relative w-full md:w-64 xl:w-64">
                     <input type="text" placeholder="Buscar productos"
