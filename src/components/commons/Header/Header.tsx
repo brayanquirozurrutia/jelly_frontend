@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useMediaQuery } from 'react-responsive';
+import BaseButton from "../BaseButton";
 
 const Header: React.FC = () => {
     const isSmallScreen = useMediaQuery({ maxWidth: 575.98 });
@@ -17,7 +18,9 @@ const Header: React.FC = () => {
                 {fontImport}
             </style>
             <div className={`flex items-center ${isSmallScreen ? 'flex-col space-y-4' : 'space-x-4'} w-full xl:w-auto`}>
-                <img src={logoUrl} alt="Logo" className="w-24 md:w-32 lg:w-40 h-auto"/>
+                <a href="/">
+                    <img src={logoUrl} alt="Logo" className="w-24 md:w-32 lg:w-40 h-auto"/>
+                </a>
                 <h1 className="text-lg md:text-xl lg:text-3xl"
                     style={{fontFamily: 'Shrikhand'}}>
                     Bienvenidos a Tecito Store
@@ -36,11 +39,7 @@ const Header: React.FC = () => {
                 </div>
 
                 {/* Inicio de sesión */}
-                <button
-                    className="w-full md:w-auto xl:w-auto px-3 py-2 bg-purple1 hover:bg-purple2 text-black font-bold rounded-lg flex items-center justify-center md:justify-center xl:justify-start space-x-2">
-                    <FontAwesomeIcon icon={faUser} className="text-black text-xl"/>
-                    <span>Iniciar sesión</span>
-                </button>
+                <BaseButton icon={faUser} label="Iniciar sesión"/>
 
                 <div className="flex items-center space-x-2">
                     {/* Icono de carrito */}
