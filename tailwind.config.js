@@ -14,6 +14,7 @@ export default {
         pink1: '#efaea4',
         pink2: '#e6d0dd',
         pink3: '#fdbb9f',
+        blue1: '#82b5eb',
       },
     },
   },
