@@ -9,16 +9,16 @@ interface ButtonProps {
     className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ icon, label, onClick, className }) => {
+const BaseButton: React.FC<ButtonProps> = ({ icon, label, onClick, className }) => {
     return (
         <button
-            className={`w-full md:w-auto xl:w-auto px-3 py-2 bg-purple1 hover:bg-purple2 text-black font-bold rounded-lg flex items-center justify-center md:justify-center xl:justify-start space-x-2 ${className}`}
+            className={`bg-purple1 hover:bg-purple2 text-black font-bold rounded-lg py-2 px-3 ml ${className}`}
             onClick={onClick}
         >
-            {icon && <FontAwesomeIcon icon={icon} className="text-black text-xl" />}
+            {icon && <FontAwesomeIcon icon={icon} className="text-black text-xl pr-2" />}
             <span>{label}</span>
         </button>
     );
 };
 
-export default Button;
+export default BaseButton;

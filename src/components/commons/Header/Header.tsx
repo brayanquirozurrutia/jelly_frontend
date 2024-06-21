@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useMediaQuery } from 'react-responsive';
 import BaseButton from "../BaseButton";
+import LoginModal from "../LoginModal";
 
 const Header: React.FC = () => {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
     const isSmallScreen = useMediaQuery({ maxWidth: 575.98 });
     const logoUrl = import.meta.env.VITE_LOGO as string;
     const fontImport = `
@@ -33,13 +39,16 @@ const Header: React.FC = () => {
                 {/* Buscador de productos */}
                 <div className="relative w-full md:w-64 xl:w-64">
                     <input type="text" placeholder="Buscar productos"
-                           className="w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg focus:border-purple1 focus:outline-none transition-all duration-150 focus:ring-2 focus:ring-purple1"/>
+                           className="w-full pl-10 pr-3 py-2 border border-gray-600 rounded-lg focus:border-purple1 focus:outline-none transition-all duration-100 focus:ring-2 focus:ring-purple1"/>
                     <FontAwesomeIcon icon={faSearch}
                                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black text-xl cursor-pointer"/>
                 </div>
 
                 {/* Inicio de sesión */}
-                <BaseButton icon={faUser} label="Iniciar sesión"/>
+                <div className="w-full md:w-auto xl:w-auto flex items-center justify-center md:justify-center xl:justify-start space-x-2">
+                    <BaseButton icon={faUser} label="Iniciar sesión" onClick={handleShowModal} className="w-100"/>
+                </div>
+                <LoginModal show={showModal} handleClose={handleCloseModal} />
 
                 <div className="flex items-center space-x-2">
                     {/* Icono de carrito */}

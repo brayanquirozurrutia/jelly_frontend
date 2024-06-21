@@ -2,8 +2,11 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
+const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
+const CSRF_URL = import.meta.env.VITE_CSRF_URL as string;
+
 async function fetchCsrfToken() {
-    const response = await fetch('http://localhost:8000/jelly/v1/authentication/csrf-token/', {
+    const response = await fetch(`${API_URL}${CSRF_URL}`, {
         credentials: 'include',
     });
     const data = await response.json();
@@ -11,7 +14,7 @@ async function fetchCsrfToken() {
 }
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/graphql',
+    uri: `${API_URL}graphql`,
     credentials: 'include',
 });
 
