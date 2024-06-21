@@ -2,11 +2,13 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    stdin_open: true
-    tty: true
+    networks:
+      - jelly_network
+    env_file:
+      - .env
+networks:
+  jelly_network:
