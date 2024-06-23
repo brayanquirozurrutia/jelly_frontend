@@ -1,3 +1,4 @@
+import axiosInstance from '../../axiosInstance.ts';
 import axios, { AxiosError } from 'axios';
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
@@ -5,8 +6,6 @@ const USER_LOGIN_URL = import.meta.env.VITE_USERS_LOGIN as string;
 
 interface LoginResponse {
     id: string;
-    access_token: string;
-    refresh_token: string;
 }
 
 interface ErrorResponse {
@@ -16,7 +15,7 @@ interface ErrorResponse {
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
     const url = `${API_URL}${USER_LOGIN_URL}`;
     try {
-        const response = await axios.post<LoginResponse>(url, {
+        const response = await axiosInstance.post<LoginResponse>(url, {
             email,
             password,
         }, {
@@ -42,3 +41,22 @@ const handleAxiosError = (error: unknown): never => {
         throw new Error('Error inesperado');
     }
 };
+
+
+const LIST_USERS_URL = 'users/list-users/';
+
+export const listUsers = async () => {
+    const url = `${API_URL}${LIST_USERS_URL}`;
+    try {
+        const response = await axiosInstance.get(url,{
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+};
+

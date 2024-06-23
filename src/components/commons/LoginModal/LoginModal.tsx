@@ -7,6 +7,7 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_USER_DETAILS } from '../../../graphql/users/queries';
 import { login } from "../../../services";
 
+
 interface LoginModalProps {
     show: boolean;
     handleClose: () => void;
@@ -46,9 +47,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
         try {
             const data = await login(email, password);
             if (data) {
-                localStorage.setItem('access_token', data.access_token);
-                localStorage.setItem('user_id', data.id);
-                document.cookie = `refresh_token=${data.refresh_token}; path=/; secure; samesite=strict;`;
+                sessionStorage.setItem('user_id', data.id);
                 await getUserDetails({ variables: { id: data.id } });
                 setSnackbarOpen(true);
             }
