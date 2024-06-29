@@ -4,8 +4,7 @@ import { gql } from '@apollo/react-hooks';
 export const GET_USER_DETAILS = gql`
   query GetUserDetails($id: ID!) {
     getUser(id: $id) {
-    email
-    fullname
+        fullname
     }
   }
 `;

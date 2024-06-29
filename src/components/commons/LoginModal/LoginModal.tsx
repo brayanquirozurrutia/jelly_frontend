@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Link as MuiLink, Snackbar, TextField, InputAdornment, IconButton, Alert, Box, Fade } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Modal, Link as MuiLink, TextField, InputAdornment, IconButton, Alert, Box } from '@mui/material';
 import { Email, Lock, Close } from '@mui/icons-material';
 import BaseButton from '../BaseButton';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER_DETAILS } from '../../../graphql/users/queries';
 import { login } from "../../../services";
-
+import { validateEmail } from '../../../utils/validations';
+import { Link as RouterLink } from 'react-router-dom';
+import CustomSnackBar from "../CustomSnackBar";
 
 interface LoginModalProps {
     show: boolean;
@@ -22,14 +23,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
         password: false,
     });
     const [errorMessage, setErrorMessage] = useState<string>('');
-
-    const [getUserDetails, { data: userData }] = useLazyQuery(GET_USER_DETAILS);
+    const [getUserDetails, { data: userData, error }] = useLazyQuery(GET_USER_DETAILS);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    const validateEmail = (email: string) => {
-        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return re.test(email);
-    };
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -176,8 +171,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
                     </form>
                     <div className="mt-2 text-center">
                         <MuiLink
-                            href="#"
+                            component={RouterLink}
+                            to="/create-account"
                             color="inherit"
+                            onClick={handleClose}
                             sx={{
                                 '&:hover': {
                                     textDecoration: 'underline',
@@ -188,27 +185,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
                     </div>
                 </Box>
             </Modal>
-            <Snackbar
+            <CustomSnackBar
                 open={snackbarOpen}
-                autoHideDuration={6000}
                 onClose={() => setSnackbarOpen(false)}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                TransitionComponent={Fade}
-            >
-                <div className="flex items-center bg-purple1 text-black p-2 rounded shadow-md font-bold hover:bg-purple2">
-                    <div className="mr-2">
-                        <img src={heartFinger} alt="Heart finger" className="w-8" />
-                    </div>
-                    <div className="pr-2">
-                        ¡Hola, {userData?.getUser.fullname}! Bienvenido a Tecito Store
-                    </div>
-                    <IconButton size="small" aria-label="close" color="inherit" onClick={() => setSnackbarOpen(false)}>
-                        <CloseIcon
-                            fontSize="small"
-                        />
-                    </IconButton>
-                </div>
-            </Snackbar>
+                backgroundColor="#be87e7"
+                iconUrl={heartFinger}
+                message={`¡Hola, ${error? ':) ' : userData?.getUser.fullname}!
+                    Bienvenido a Tecito Store!`}
+                hoverBackgroundColor="#a57ee8"
+            />
         </>
     );
 };

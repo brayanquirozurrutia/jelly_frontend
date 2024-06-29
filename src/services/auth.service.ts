@@ -3,9 +3,21 @@ import axios, { AxiosError } from 'axios';
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const USER_LOGIN_URL = import.meta.env.VITE_USERS_LOGIN as string;
+const USER_CREATE_URL = import.meta.env.VITE_USERS_CREATE as string;
 
 interface LoginResponse {
     id: string;
+}
+
+interface CreateUserResponse {
+    id: string;
+    rut: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    gender: string;
+    birth_date: string;
+    nickname: string;
 }
 
 interface ErrorResponse {
@@ -29,6 +41,31 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     }
 };
 
+export const createUser = async (data: {
+    rut: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    gender: string;
+    birth_date: string;
+    password_2: string;
+    nickname: string;
+}): Promise<CreateUserResponse> => {
+    const url = `${API_URL}${USER_CREATE_URL}`;
+    try {
+        const response = await axiosInstance.post<CreateUserResponse>(url, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+};
+
 const handleAxiosError = (error: unknown): never => {
     if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<ErrorResponse>;
@@ -41,22 +78,3 @@ const handleAxiosError = (error: unknown): never => {
         throw new Error('Error inesperado');
     }
 };
-
-
-const LIST_USERS_URL = 'users/list-users/';
-
-export const listUsers = async () => {
-    const url = `${API_URL}${LIST_USERS_URL}`;
-    try {
-        const response = await axiosInstance.get(url,{
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        throw error;
-    }
-};
-
