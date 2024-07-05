@@ -1,5 +1,5 @@
-import axiosInstance from '../../axiosInstance.ts';
-import axios, { AxiosError } from 'axios';
+import axiosInstance from '../../../axiosInstance.ts';
+import { handleAxiosError } from '../Error';
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const USER_LOGIN_URL = import.meta.env.VITE_USERS_LOGIN as string;
@@ -7,6 +7,7 @@ const USER_CREATE_URL = import.meta.env.VITE_USERS_CREATE as string;
 
 interface LoginResponse {
     id: string;
+    user_admin: boolean;
 }
 
 interface CreateUserResponse {
@@ -20,19 +21,16 @@ interface CreateUserResponse {
     nickname: string;
 }
 
-interface ErrorResponse {
-    error: string;
-}
-
-export const login = async (email: string, password: string): Promise<LoginResponse> => {
+export const login = async (data: {
+    email: string,
+    password: string
+}): Promise<LoginResponse> => {
     const url = `${API_URL}${USER_LOGIN_URL}`;
     try {
-        const response = await axiosInstance.post<LoginResponse>(url, {
-            email,
-            password,
-        }, {
+        const response = await axiosInstance.post<LoginResponse>(url, data, {
             headers: {
                 'Content-Type': 'application/json',
+                'accept': 'application/json',
             },
         });
         return response.data;
@@ -63,18 +61,5 @@ export const createUser = async (data: {
         return response.data;
     } catch (error) {
         return handleAxiosError(error);
-    }
-};
-
-const handleAxiosError = (error: unknown): never => {
-    if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError<ErrorResponse>;
-        if (axiosError.response?.data?.error) {
-            throw new Error(axiosError.response.data.error);
-        } else {
-            throw new Error('Ocurrió un error');
-        }
-    } else {
-        throw new Error('Error inesperado');
     }
 };

@@ -7,6 +7,7 @@ interface ButtonProps {
     icon?: IconDefinition;
     onClick?: () => void;
     className?: string;
+    disabled?: boolean;
 }
 
 const BaseButton: React.FC<ButtonProps> = (
@@ -14,12 +15,14 @@ const BaseButton: React.FC<ButtonProps> = (
         icon,
         label,
         onClick,
-        className
+        className,
+        disabled = false
     }) => {
     return (
         <button
             className={`bg-purple1 hover:bg-purple2 text-black font-bold rounded-lg py-2 px-3 shadow-md ${className}`}
             onClick={onClick}
+            disabled={disabled}
         >
             {icon && <FontAwesomeIcon icon={icon} className="text-black text-xl pr-2" />}
             <span>{label}</span>

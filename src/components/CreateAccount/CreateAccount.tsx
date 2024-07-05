@@ -4,7 +4,7 @@ import { validateRut, validateEmail } from '../../utils/validations';
 import BaseButton from '../commons/BaseButton';
 import CustomPopover from "../commons/Popover";
 import { capitalize } from '../../utils/stringUtils';
-import { createUser } from "../../services";
+import { createUser } from "../../services/Auth";
 import CustomSnackBar from "../commons/CustomSnackBar";
 
 const CreateAccount: React.FC = () => {
