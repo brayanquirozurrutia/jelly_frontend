@@ -36,3 +36,15 @@ export const GET_PRODUCT_DETAILS = gql`
     }
   }
 `;
+
+// Query to get all groups
+export const GET_GROUPS = gql`
+  query ListGroups($search: String, $page: Int, $pageSize: Int) {
+    listGroups(search: $search, page: $page, pageSize: $pageSize) {
+      id
+      name
+      description
+    }
+    totalGroups(search: $search)
+  }
+`;

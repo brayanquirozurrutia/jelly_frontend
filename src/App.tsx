@@ -9,6 +9,9 @@ import ProductDetails from "./components/ProductDetails";
 import CreateAccount from "./components/CreateAccount";
 import CarouselLayout from './layouts/CarouselLayout.tsx';
 import NoCarouselLayout from './layouts/NoCarouselLayout.tsx';
+import DashboardLayout from "./layouts/DashboardLayout.tsx";
+import Dashboard from "./components/Dashboard";
+import Groups from "./components/Dashboard/Groups";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -34,6 +37,10 @@ function App() {
                                 <CreateAccount />
                             </NoCarouselLayout>
                         } />
+                        <Route path="/dashboard" element={<DashboardLayout />}>
+                            <Route index element={<Dashboard />} />
+                            <Route path="groups" element={<Groups />} />
+                        </Route>
                     </Routes>
                 </Router>
             </ThemeProvider>

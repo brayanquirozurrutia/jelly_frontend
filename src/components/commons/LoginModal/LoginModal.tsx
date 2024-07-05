@@ -4,10 +4,11 @@ import { Email, Lock, Close } from '@mui/icons-material';
 import BaseButton from '../BaseButton';
 import { useLazyQuery } from '@apollo/client';
 import { GET_USER_DETAILS } from '../../../graphql/users/queries';
-import { login } from "../../../services";
+import { login } from "../../../services/Auth";
 import { validateEmail } from '../../../utils/validations';
 import { Link as RouterLink } from 'react-router-dom';
 import CustomSnackBar from "../CustomSnackBar";
+import {useAuth} from "../../../auth/AuthContext.tsx";
 
 interface LoginModalProps {
     show: boolean;
@@ -15,6 +16,7 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
+    const { authenticateUser, authenticateAdmin } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [focusedInput, setFocusedInput] = useState<string | null>(null);
@@ -40,10 +42,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
         }
 
         try {
-            const data = await login(email, password);
+            const data = await login({ email, password });
             if (data) {
                 sessionStorage.setItem('user_id', data.id);
                 await getUserDetails({ variables: { id: data.id } });
+                const isAdmin = data.user_admin;
+
+                if (isAdmin) {
+                    authenticateAdmin();
+                } else {
+                    authenticateUser();
+                }
                 setSnackbarOpen(true);
             }
 
