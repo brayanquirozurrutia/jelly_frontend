@@ -1,1 +1,1 @@
-export { default } from './Groups.tsx';
+export { default } from './GroupMain';
