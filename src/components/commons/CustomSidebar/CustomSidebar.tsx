@@ -4,9 +4,6 @@ import { ExpandLess, ExpandMore, ChevronLeft } from '@mui/icons-material';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import Inventory2Icon from '@mui/icons-material/Inventory2';
 import CategoryIcon from '@mui/icons-material/Category';
 import GroupIcon from '@mui/icons-material/Group';
 
@@ -87,39 +84,14 @@ const CustomSidebar: React.FC<SidebarProps> = ({ open, handleDrawerToggle }) => 
             icon: <DashboardIcon />,
         },
         {
-            text: 'Productos',
-            icon: <Inventory2Icon />,
-            subMenuItems: [
-                { text: 'Ver productos', url: '/products' },
-                { text: 'Crear producto', url: '/create-product' },
-            ],
-        },
-        {
             text: 'Categorías',
             icon: <CategoryIcon />,
-            subMenuItems: [
-                { text: 'Ver categorías', url: '/categories' },
-                { text: 'Crear categoría', url: '/create-category' },
-            ],
+            url: '/dashboard/categories'
         },
         {
             text: 'Grupos',
             icon: <GroupIcon />,
             url: '/dashboard/groups'
-        },
-        {
-            text: 'Orders',
-            icon: <ShoppingCartIcon />,
-            subMenuItems: [
-                { text: 'All Orders' },
-                { text: 'Pending Orders' },
-                { text: 'Completed Orders' },
-            ],
-        },
-        {
-            text: 'Customers',
-            icon: <PeopleIcon />,
-            url: '/customers',
         },
     ];
 

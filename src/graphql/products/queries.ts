@@ -48,3 +48,15 @@ export const GET_GROUPS = gql`
     totalGroups(search: $search)
   }
 `;
+
+// Query to get all categories
+export const GET_CATEGORIES = gql`
+  query ListCategories($search: String, $page: Int, $pageSize: Int) {
+    listCategories(search: $search, page: $page, pageSize: $pageSize) {
+      id
+      name
+      description
+    }
+    totalCategories(search: $search)
+  }
+`;

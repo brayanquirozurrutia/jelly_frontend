@@ -14,7 +14,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     useEffect(() => {
-        if (!isLoggedIn && !userAdmin) {
+        if (!isLoggedIn || !userAdmin) {
             navigate('/', { replace: true });
         }
     }, [isLoggedIn, userAdmin, navigate]);

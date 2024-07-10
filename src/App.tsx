@@ -11,7 +11,9 @@ import CarouselLayout from './layouts/CarouselLayout.tsx';
 import NoCarouselLayout from './layouts/NoCarouselLayout.tsx';
 import DashboardLayout from "./layouts/DashboardLayout.tsx";
 import Dashboard from "./components/Dashboard";
-import Groups from "./components/Dashboard/Groups";
+import ActivateAccount from "./components/ActivateAccount";
+import GroupMain from "./components/Dashboard/Groups";
+import CategoryMain from "./components/Dashboard/Categories";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -22,6 +24,9 @@ function App() {
             <ThemeProvider theme={theme}>
                 <Router>
                     <Routes>
+                        <Route path="/activate-account" element={
+                            <ActivateAccount />
+                        } />
                         <Route path="/" element={
                             <CarouselLayout>
                                 <Products />
@@ -39,7 +44,8 @@ function App() {
                         } />
                         <Route path="/dashboard" element={<DashboardLayout />}>
                             <Route index element={<Dashboard />} />
-                            <Route path="groups" element={<Groups />} />
+                            <Route path="groups" element={<GroupMain />} />
+                            <Route path="categories" element={<CategoryMain />} />
                         </Route>
                     </Routes>
                 </Router>

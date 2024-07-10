@@ -4,6 +4,8 @@ import { handleAxiosError } from '../Error';
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const USER_LOGIN_URL = import.meta.env.VITE_USERS_LOGIN as string;
 const USER_CREATE_URL = import.meta.env.VITE_USERS_CREATE as string;
+const USER_ACTIVATE_ACCOUNT_URL = import.meta.env.VITE_USERS_ACTIVATE_ACCOUNT as string;
+const USER_ACTIVATE_ACCOUNT_NEW_TOKEN_URL = import.meta.env.VITE_USERS_ACTIVATE_ACCOUNT_NEW_TOKEN as string;
 
 interface LoginResponse {
     id: string;
@@ -19,6 +21,14 @@ interface CreateUserResponse {
     gender: string;
     birth_date: string;
     nickname: string;
+}
+
+interface ActivateAccountResponse {
+    message: string;
+}
+
+interface ActivateAccountNewTokenResponse {
+    message: string;
 }
 
 export const login = async (data: {
@@ -63,3 +73,38 @@ export const createUser = async (data: {
         return handleAxiosError(error);
     }
 };
+
+export const activateAccount = async (data: {
+    account_activation_token: string;
+    email: string;
+}): Promise<ActivateAccountResponse> => {
+    const url = `${API_URL}${USER_ACTIVATE_ACCOUNT_URL}`;
+    try {
+        const response = await axiosInstance.post<ActivateAccountResponse>(url, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+}
+
+export const activateAccountNewToken = async (data: {
+    email: string;
+}): Promise<ActivateAccountNewTokenResponse> => {
+    const url = `${API_URL}${USER_ACTIVATE_ACCOUNT_NEW_TOKEN_URL}`;
+    try {
+        const response = await axiosInstance.post<ActivateAccountNewTokenResponse>(url, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+}
