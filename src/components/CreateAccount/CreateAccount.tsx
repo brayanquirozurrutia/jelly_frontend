@@ -25,13 +25,7 @@ const CreateAccount: React.FC = () => {
     const [birthDateError, setBirthDateError] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarTitle, setSnackbarTitle] = useState('');
-    const [snackbarIcon, setSnackbarIcon] = useState('');
-    const [snackbarBackgroundColor, setSnackbarBackgroundColor] = useState('');
-    const [snackbarHoverBackgroundColor, setSnackbarHoverBackgroundColor] = useState('');
-
-    const sadPou = import.meta.env.VITE_SAD_POU_ICON as string;
-    const heartFinger = import.meta.env.VITE_HEART_ICON as string;
+    const [endpointError, setEndpointError] = useState(false);
 
     const handleCreateAccount = async () => {
         try {
@@ -46,13 +40,8 @@ const CreateAccount: React.FC = () => {
                 password_2: confirmPassword.trim(),
                 nickname: nickname.trim(),
             };
-            const response = await createUser(cleanData);
-            console.log(response);
-            setSnackbarTitle('¡Cuenta creada!')
+            await createUser(cleanData);
             setSnackbarMessage('Revisa tu correo electrónico para activar tu cuenta.')
-            setSnackbarIcon(heartFinger)
-            setSnackbarBackgroundColor('#be87e7');
-            setSnackbarHoverBackgroundColor('#a57ee8')
             setSnackbarOpen(true);
             setRut('');
             setName('');
@@ -66,11 +55,8 @@ const CreateAccount: React.FC = () => {
             setNickname('');
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+            setEndpointError(true)
             setSnackbarMessage(errorMessage);
-            setSnackbarTitle('Más triste que la ch@&%$#!')
-            setSnackbarBackgroundColor('#f5f5f5');
-            setSnackbarHoverBackgroundColor('#e0e0e0');
-            setSnackbarIcon(sadPou);
             setSnackbarOpen(true);
         }
     };
@@ -342,11 +328,8 @@ const CreateAccount: React.FC = () => {
             <CustomSnackBar
                 open={snackbarOpen}
                 onClose={() => setSnackbarOpen(false)}
-                iconUrl={snackbarIcon}
-                title={snackbarTitle}
                 message={snackbarMessage}
-                backgroundColor={snackbarBackgroundColor}
-                hoverBackgroundColor={snackbarHoverBackgroundColor}
+                type={endpointError ? 'error' : 'success'}
             />
         </div>
     );

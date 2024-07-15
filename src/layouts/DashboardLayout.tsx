@@ -9,17 +9,18 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-    const { isLoggedIn, userAdmin } = useAuth();
+    const { isLoggedIn } = useAuth();
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const userAdmin = sessionStorage.getItem('userAdmin');
 
     useEffect(() => {
-        if (!isLoggedIn || !userAdmin) {
+        if (!isLoggedIn && userAdmin !== 'true') {
             navigate('/', { replace: true });
         }
     }, [isLoggedIn, userAdmin, navigate]);
 
-    if (!isLoggedIn || !userAdmin) {
+    if (!isLoggedIn && userAdmin !== 'true') {
         return null;
     }
 

@@ -94,8 +94,7 @@ const CreateComponent: React.FC<CreateComponentProps> = (
                 onClose={() => setSnackbarOpen(false)}
                 message={endpointError ? endpointError : endpointSuccess}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                backgroundColor={endpointError ? '#f0f0f0f0' : '#be87e7'}
-                hoverBackgroundColor={endpointError ? '#f0f0f0f0' : '#a57ee8'}
+                type={endpointError ? 'error' : 'success'}
             />
             <div
                 className="flex items-center justify-between cursor-pointer"

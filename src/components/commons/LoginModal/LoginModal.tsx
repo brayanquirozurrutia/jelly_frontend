@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
-import { Modal, Link as MuiLink, TextField, InputAdornment, IconButton, Alert, Box } from '@mui/material';
-import { Email, Lock, Close } from '@mui/icons-material';
-import BaseButton from '../BaseButton';
+import React from 'react';
+import {
+    Box,
+    Modal,
+    Alert,
+    IconButton,
+    Link as MuiLink
+} from '@mui/material';
+import {
+    Email,
+    Lock,
+    Close
+} from '@mui/icons-material';
 import { useLazyQuery } from '@apollo/client';
-import { GET_USER_DETAILS } from '../../../graphql/users/queries';
-import { login } from "../../../services/Auth";
-import { validateEmail } from '../../../utils/validations';
 import { Link as RouterLink } from 'react-router-dom';
+
+import BaseButton from '../BaseButton';
+import CustomInput from "../Inputs";
 import CustomSnackBar from "../CustomSnackBar";
-import {useAuth} from "../../../auth/AuthContext.tsx";
+import ResetPasswordNewToken from "../../ResetPassword/ResetPasswordNewToken";
+import { useAuth } from "../../../auth/AuthContext.tsx";
+import { login } from "../../../services/Auth";
+import { GET_USER_DETAILS } from '../../../graphql/users/queries';
+import useLoginForm from "../../../hooks/Commons/useLoginForm.ts";
 
 interface LoginModalProps {
     show: boolean;
@@ -16,73 +29,95 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
-    const { authenticateUser, authenticateAdmin } = useAuth();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [focusedInput, setFocusedInput] = useState<string | null>(null);
-    const [errors, setErrors] = useState<{ email: boolean; password: boolean }>({
-        email: false,
-        password: false,
-    });
-    const [errorMessage, setErrorMessage] = useState<string>('');
-    const [getUserDetails, { data: userData, error }] = useLazyQuery(GET_USER_DETAILS);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const {
+        email,
+        setEmail,
+        emailError,
+        setEmailError,
+        password,
+        setPassword,
+        passwordError,
+        setPasswordError,
+        focusedInput,
+        setFocusedInput,
+        snackbarOpen,
+        setSnackbarOpen,
+        endpointError,
+        setEndpointError,
+        setEndpointSuccess,
+    } = useLoginForm();
 
-    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const emailValid = validateEmail(email);
-        const passwordValid = password.length > 0;
+    const { loginContext } = useAuth();
+    const [getUserDetails, {
+        data: userData,
+        error
+    }] = useLazyQuery(GET_USER_DETAILS);
 
-        if (!emailValid || !passwordValid) {
-            setErrors({
-                email: !emailValid,
-                password: !passwordValid,
-            });
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!email) {
+            setEmailError('El correo es requerido');
             return;
         }
 
+        if (!password) {
+            setPasswordError('La contraseña es requerida');
+            return;
+        }
+
+        if (emailError || passwordError) return;
+
+        setEmailError('');
+        setPasswordError('');
+        setEndpointSuccess('');
+        setEndpointError('');
+
+        await handleLogin(e);
+    };
+
+    const handleLogin = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        const data = {
+            email: email,
+            password: password
+        };
+
         try {
-            const data = await login({ email, password });
-            if (data) {
-                sessionStorage.setItem('user_id', data.id);
-                await getUserDetails({ variables: { id: data.id } });
-                const isAdmin = data.user_admin;
-
-                if (isAdmin) {
-                    authenticateAdmin();
-                } else {
-                    authenticateUser();
-                }
-                setSnackbarOpen(true);
-            }
-
-            setErrors({ email: false, password: false });
-            setEmail('');
-            setPassword('');
-            setErrorMessage('');
+            const response = await login(data);
+            const userId = response.id;
+            const userAdmin = response.user_admin.toString().toLowerCase();
+            sessionStorage.setItem('userId', userId);
+            sessionStorage.setItem('userAdmin', userAdmin);
+            await getUserDetails({ variables: { id: userId } });
+            loginContext();
+            setSnackbarOpen(true);
             handleClose();
         } catch (error) {
             if (error instanceof Error) {
-                setErrorMessage(error.message);
+                setEndpointError(error.message);
             } else {
-                setErrorMessage('Error inesperado');
+                setEndpointError('Error inesperado');
             }
+        } finally {
+            setEmail('');
+            setPassword('');
         }
     };
 
     const logoUrl = import.meta.env.VITE_LOGO as string;
-    const heartFinger = import.meta.env.VITE_HEART_ICON as string;
 
     return (
-        <>
+        <div className="overflow-auto">
             <Modal
                 open={show}
                 onClose={handleClose}
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
-                className="flex items-center justify-center"
+                className="flex items-center justify-center overflow-y-auto"
             >
-                <Box className="bg-white rounded shadow-lg p-6 w-full max-w-md mx-auto">
+                <Box className="bg-white rounded shadow-lg p-6 w-full max-w-md mx-auto overflow-y-auto">
                     <div className="flex justify-between items-center">
                         <div></div>
                         <IconButton onClick={handleClose} sx={{
@@ -96,83 +131,38 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
                         <img src={logoUrl} alt="Logo" className="w-20 mb-2" />
                         <div className="text-lg font-medium">Ingresa a tu cuenta</div>
                     </div>
-                    <form onSubmit={handleLogin}>
-                        <TextField
-                            fullWidth
-                            margin="normal"
-                            id="formBasicEmail"
-                            label="Correo"
-                            type="email"
-                            placeholder="correo@mail.com"
+                    <form onSubmit={handleSubmit}>
+                        <CustomInput
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            onFocus={() => setFocusedInput('email')}
-                            onBlur={() => setFocusedInput(null)}
-                            required
-                            error={errors.email}
-                            helperText={errors.email ? "Ingrese un correo válido" : ""}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <Email sx={{ color: focusedInput === 'email' ? '#a57ee8' : '' }} />
-                                    </InputAdornment>
-                                ),
-                            }}
-                            variant="outlined"
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '&:hover fieldset': {
-                                        borderColor: '#be87e7',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: errors.email ? 'red' : '#a57ee8',
-                                    },
-                                },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                },
-                            }}
+                            setValue={setEmail}
+                            valueError={emailError}
+                            setFocusedInput={setFocusedInput}
+                            focusedInput={focusedInput}
+                            id="email"
+                            label="Correo"
+                            placeholder="correo@mail.com"
+                            icon={Email}
+                            focusText="email"
+                            type="email"
+                            required={true}
                         />
-                        <TextField
-                            fullWidth
-                            margin="normal"
-                            id="formBasicPassword"
-                            label="Contraseña"
-                            type="password"
-                            placeholder="Contraseña"
+                        <CustomInput
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            onFocus={() => setFocusedInput('password')}
-                            onBlur={() => setFocusedInput(null)}
-                            required
-                            error={errors.password}
-                            helperText={errors.password ? "Ingrese una contraseña válida" : ""}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <Lock sx={{ color: focusedInput === 'password' ? '#a57ee8' : '' }} />
-                                    </InputAdornment>
-                                ),
-                            }}
-                            variant="outlined"
-                            sx={{
-                                '& .MuiOutlinedInput-root': {
-                                    '&:hover fieldset': {
-                                        borderColor: '#be87e7',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: errors.password ? 'red' : '#a57ee8',
-                                    },
-                                },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                },
-                            }}
+                            setValue={setPassword}
+                            valueError={passwordError}
+                            setFocusedInput={setFocusedInput}
+                            focusedInput={focusedInput}
+                            id="password"
+                            label="Contraseña"
+                            placeholder="Contraseña"
+                            icon={Lock}
+                            focusText="password"
+                            type="password"
+                            required={true}
                         />
-                        {errorMessage && (
-                            <Alert severity="error">{errorMessage}</Alert>
+
+                        {endpointError && (
+                            <Alert severity="error">{endpointError}</Alert>
                         )}
                         <div className="mt-4">
                             <BaseButton label="Iniciar sesión" className="w-full text-center" />
@@ -192,19 +182,21 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
                             }}>
                             ¿No posees cuenta?</MuiLink>
                     </div>
+                    <div className="mt-2 text-center">
+                        <ResetPasswordNewToken/>
+                    </div>
                 </Box>
             </Modal>
-            <CustomSnackBar
-                open={snackbarOpen}
-                onClose={() => setSnackbarOpen(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                backgroundColor="#be87e7"
-                iconUrl={heartFinger}
-                message={`¡Hola, ${error? ':) ' : userData?.getUser.fullname}!
-                    Bienvenido a Tecito Store!`}
-                hoverBackgroundColor="#a57ee8"
-            />
-        </>
+            {snackbarOpen && (
+                <CustomSnackBar
+                    open={snackbarOpen}
+                    onClose={() => setSnackbarOpen(false)}
+                    message={`¡Hola, ${error ? ':) ' : userData?.getUser.fullname}! Bienvenido a Tecito Store!`}
+                    type={error ? 'error' : 'success'}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                />
+            )}
+        </div>
     );
 };
 

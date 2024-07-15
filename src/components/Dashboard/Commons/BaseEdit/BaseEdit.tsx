@@ -45,7 +45,7 @@ const BaseEdit: React.FC<EditComponentProps> = (
                 if (error instanceof Error) {
                     setErrorMessage(error.message);
                 } else {
-                    setErrorMessage('Error al eliminar ' + componentName);
+                    setErrorMessage('Error al actualizar ' + componentName);
                 }
             }
             setTimeout(() => {

@@ -2,11 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface AuthContextType {
     isLoggedIn: boolean;
-    userAdmin: boolean;
-    login: () => void;
+    loginContext: () => void;
     logout: () => void;
-    authenticateUser: () => void;
-    authenticateAdmin: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,51 +14,32 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn');
+        const loggedIn = sessionStorage.getItem('isLoggedIn');
         return loggedIn ? JSON.parse(loggedIn) : false;
     });
 
-    const [userAdmin, setUserAdmin] = useState(() => {
-        const admin = localStorage.getItem('userAdmin');
-        return admin ? JSON.parse(admin) : false;
-    });
-
-    const login = () => {
+    const loginContext = () => {
         setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('isLoggedIn', 'true');
     };
 
     const logout = () => {
         setIsLoggedIn(false);
-        localStorage.removeItem('isLoggedIn');
-        setUserAdmin(false);
-        localStorage.removeItem('userAdmin');
-    };
-
-    const authenticateUser = () => {
-        login();
-    };
-
-    const authenticateAdmin = () => {
-        login();
-        setUserAdmin(true);
-        localStorage.setItem('userAdmin', 'true');
+        sessionStorage.removeItem('isLoggedIn');
     };
 
     useEffect(() => {
         if (!isLoggedIn) {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userAdmin');
+            sessionStorage.removeItem('isLoggedIn');
         }
     }, [isLoggedIn]);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, userAdmin, login, logout, authenticateUser, authenticateAdmin }}>
+        <AuthContext.Provider value={{ isLoggedIn, loginContext, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
 
 export const useAuth = (): AuthContextType => {
     const context = useContext(AuthContext);

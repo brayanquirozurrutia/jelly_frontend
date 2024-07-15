@@ -1,17 +1,14 @@
 import React from 'react';
-import {Snackbar, SnackbarContent, IconButton, Typography, Grid, Fade} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import {Snackbar, Fade, SnackbarContent} from '@mui/material';
+import CustomAlert from "../CustomAlert";
 
 interface CustomSnackBarProps {
     open: boolean;
     onClose: () => void;
     anchorOrigin?: { vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' };
     autoHideDuration?: number;
-    backgroundColor?: string;
-    iconUrl?: string;
-    title?: string;
     message: string;
-    hoverBackgroundColor?: string;
+    type?: 'success' | 'error' | 'warning' | 'info';
 }
 
 const CustomSnackBar: React.FC<CustomSnackBarProps> = (
@@ -20,12 +17,10 @@ const CustomSnackBar: React.FC<CustomSnackBarProps> = (
         onClose,
         anchorOrigin = { vertical: 'top', horizontal: 'right' },
         autoHideDuration = 6000,
-        backgroundColor = '#f5f5f5',
-        iconUrl,
-        title,
         message,
-        hoverBackgroundColor = '#e0e0e0',
+        type,
     }) => {
+
     return (
         <Snackbar
             anchorOrigin={anchorOrigin}
@@ -33,47 +28,17 @@ const CustomSnackBar: React.FC<CustomSnackBarProps> = (
             autoHideDuration={autoHideDuration}
             onClose={onClose}
             TransitionComponent={Fade}
+            sx={{
+                backgroundColor: 'transparent',
+            }}
         >
             <SnackbarContent
                 sx={{
-                    backgroundColor: backgroundColor,
-                    '&:hover': {
-                        backgroundColor: hoverBackgroundColor,
-                    },
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    padding: 0,
                 }}
-                message={
-                    <Grid
-                        container
-                        alignItems="center"
-                    >
-                        <div>
-                            {iconUrl && <img src={iconUrl} alt="Icon" style={{width: 30, marginRight: 10}}/>}
-                        </div>
-                        <div>
-                            {title && (
-                                <Typography variant="subtitle1" sx={{color: 'black', fontWeight: 'bold'}}>
-                                    {title}
-                                </Typography>
-                            )}
-                            <Typography variant="body1" sx={{color: 'black', fontWeight: 'bold'}}>
-                                {message}
-                            </Typography>
-                        </div>
-                    </Grid>
-                }
-                action={
-                    <IconButton
-                        size="small"
-                        aria-label="close"
-                        color="inherit"
-                        onClick={onClose}
-                    >
-                        <CloseIcon
-                            fontSize="small"
-                            className="text-black"
-                        />
-                    </IconButton>
-                }
+                message={<CustomAlert onClose={onClose} message={message} type={type}/>}
             />
         </Snackbar>
     );

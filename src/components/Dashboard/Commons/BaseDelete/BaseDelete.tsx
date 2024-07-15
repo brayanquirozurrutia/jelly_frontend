@@ -51,7 +51,7 @@ const BaseDelete: React.FC<DeleteComponentProps> = (
             <DialogTitle>Eliminar {componentName}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    ¿Estás seguro de que deseas eliminar el {componentName} "{object?.name}"? Esta acción no se puede deshacer.
+                    ¿Estás seguro de que deseas eliminar "{object?.name}"? Esta acción no se puede deshacer.
                 </DialogContentText>
                 {errorMessage && (
                     <Alert severity="error">{errorMessage}</Alert>

@@ -53,14 +53,14 @@ const BaseMain: React.FC<MainProps> = (
 
     const handleUpdated = () => {
         setEditDialogOpen(false);
-        setEndpointSuccess(componentName + ' actualizado exitosamente');
+        setEndpointSuccess('Actualización exitosa');
         setSnackbarOpen(true);
         handleRefreshTable();
     };
 
     const handleDeleted = () => {
         setDeleteDialogOpen(false);
-        setEndpointSuccess(componentName + ' eliminado exitosamente');
+        setEndpointSuccess('Eliminación exitosa');
         setSnackbarOpen(true);
         handleRefreshTable();
     };
@@ -72,8 +72,7 @@ const BaseMain: React.FC<MainProps> = (
                 onClose={() => setSnackbarOpen(false)}
                 message={endpointSuccess}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                backgroundColor='#be87e7'
-                hoverBackgroundColor='#a57ee8'
+                type="success"
             />
             <BaseCreate
                 onCreated={handleRefreshTable}

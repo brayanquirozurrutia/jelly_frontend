@@ -11,7 +11,8 @@ import CarouselLayout from './layouts/CarouselLayout.tsx';
 import NoCarouselLayout from './layouts/NoCarouselLayout.tsx';
 import DashboardLayout from "./layouts/DashboardLayout.tsx";
 import Dashboard from "./components/Dashboard";
-import ActivateAccount from "./components/ActivateAccount";
+import ActivateAccount from "./components/ActivateAccount/ActivateAccount";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 import GroupMain from "./components/Dashboard/Groups";
 import CategoryMain from "./components/Dashboard/Categories";
 
@@ -26,6 +27,9 @@ function App() {
                     <Routes>
                         <Route path="/activate-account" element={
                             <ActivateAccount />
+                        } />
+                        <Route path="/reset-password" element={
+                            <ResetPassword />
                         } />
                         <Route path="/" element={
                             <CarouselLayout>

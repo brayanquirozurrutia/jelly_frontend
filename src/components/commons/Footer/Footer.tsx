@@ -21,10 +21,10 @@ const Footer: React.FC = () => {
                         {/* Sección 2: Ubicación con dirección y el mapa */}
                         <div className="col-span-4 w-100 md:col-span-2 lg:col-span-1">
                             <h2 className="text-lg font-semibold mb-4">Nuestra Ubicación</h2>
-                            <p>123 Calle Principal, Ciudad, País</p>
+                            <p>Metro Santa Ana, Satiago, Chile</p>
                             <div className="mt-4 w-full h-48">
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835434507176!2d144.95605431514852!3d-37.81720974265433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43b2c76d2b%3A0xf5772f3a1f6ddc5!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1630919674765!5m2!1sen!2sau"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1979.7005711909715!2d-70.65916191813685!3d-33.43767909783297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c5af90d78215%3A0x9cd113c27aec4cee!2sSanta%20Ana%20L5!5e0!3m2!1ses-419!2scl!4v1721002944456!5m2!1ses-419!2scl"
                                     width="100%"
                                     height="100%"
                                     allowFullScreen={false}
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
                         <div className="col-span-4 w-100 md:col-span-2 lg:col-span-1">
                             <h2 className="text-lg font-semibold mb-4">Síguenos en</h2>
                             <div className="">
-                                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                                <a href="https://www.instagram.com/storetecito" target="_blank" rel="noopener noreferrer">
                                     <FontAwesomeIcon icon={faInstagram} size="2x" bounce/>
                                 </a>
                             </div>
@@ -68,18 +68,18 @@ const Footer: React.FC = () => {
                 </div>
             </div>
             <div className="mt-10 text-center">
-                <p>&copy; 2024 Tu Tienda. Todos los derechos reservados.</p>
+                <p>&copy; 2024 Tecito Store. Todos los derechos reservados.</p>
                 <p><a
                     href="https://github.com/brayanquirozurrutia/"
                     target="_blank"
                     rel="noopener noreferrer">Made with <FontAwesomeIcon
                     icon={faHeart}
                     beatFade
-                    style={{color: "#ff0000",}}/> by Brayan Quriroz
+                    style={{color: "#ff0000",}}/> by Brayan Quiroz
                 </a></p>
             </div>
         </footer>
-);
+    );
 };
 
 export default Footer;
