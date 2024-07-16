@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
+const API_JWT_REFRESH_URL = import.meta.env.VITE_JWT_REFRESH as string;
 const axiosInstance = axios.create({
     baseURL: API_URL,
     withCredentials: true,
@@ -8,7 +9,7 @@ const axiosInstance = axios.create({
 
 async function refreshToken() {
     try {
-        const response = await axiosInstance.post(`authentication/token/refresh/`, {
+        const response = await axiosInstance.post(API_JWT_REFRESH_URL, {
             refresh: getCookie('refresh_token')
         });
         setCookie('access_token', response.data.access, 60 * 60 * 24);
