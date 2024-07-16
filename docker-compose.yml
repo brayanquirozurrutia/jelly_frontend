@@ -5,10 +5,11 @@ services:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "80:80"
     networks:
       - jelly_network
     env_file:
-      - .env
+      - .env.production
+
 networks:
   jelly_network:
