@@ -9,6 +9,8 @@ services:
       - jelly_network
     env_file:
       - .env.production
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
 
 networks:
   jelly_network:
