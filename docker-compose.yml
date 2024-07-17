@@ -1,9 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
+  frontend:
+    build: .
     ports:
       - "3001:80"
     networks:
@@ -13,3 +12,4 @@ services:
 
 networks:
   jelly_network:
+    driver: bridge
