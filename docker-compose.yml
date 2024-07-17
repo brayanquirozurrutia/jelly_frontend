@@ -2,15 +2,14 @@ version: '3.9'
 
 services:
   frontend:
-    build: .
-    ports:
-      - "80:80"
-    networks:
-      - jelly_network
-    env_file:
-      - .env.production
+    build:
+      context: .
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - "3000:80"
+    networks:
+      - jelly_network
 
 networks:
   jelly_network:

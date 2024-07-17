@@ -8,9 +8,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      port: 3000, // Este puerto solo es para desarrollo
+      port: 3000,
       ...(isProduction ? {} : {
-        host: '0.0.0.0', // Para desarrollo, accesible desde cualquier IP
+        host: '0.0.0.0',
         proxy: {
           '/api': {
             target: 'http://localhost:8000',
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
-      sourcemap: isProduction, // Generar sourcemaps solo en producción
+      sourcemap: isProduction,
     },
   };
 });
