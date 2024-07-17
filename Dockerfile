@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build && ls -la build
+RUN npm run build && ls -la dist
 
 FROM nginx:alpine
 
