@@ -5,7 +5,8 @@ import { styled, Theme, CSSObject } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CategoryIcon from '@mui/icons-material/Category';
-import GroupIcon from '@mui/icons-material/Group';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 
 interface SubMenuItem {
     text: string;
@@ -90,9 +91,19 @@ const CustomSidebar: React.FC<SidebarProps> = ({ open, handleDrawerToggle }) => 
         },
         {
             text: 'Grupos',
-            icon: <GroupIcon />,
+            icon: <GroupsIcon />,
             url: '/dashboard/groups'
         },
+        {
+            text: 'Admin',
+            icon: <AutoAwesomeMotionIcon />,
+            subMenuItems: [
+                {
+                    text: 'Frases',
+                    url: '/dashboard/admin-app/phrases',
+                },
+            ]
+        }
     ];
 
     const handleSubMenuToggle = (text: string) => {

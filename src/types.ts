@@ -42,3 +42,12 @@ export interface CountDownProps {
     initialCountdown: number,
     onCountdownEnd: () => void,
 }
+
+export interface BannerPhrase {
+    id: string;
+    phrase: string;
+}
+
+export interface BannerPhrasesData {
+    bannerPhrases: BannerPhrase[];
+}
