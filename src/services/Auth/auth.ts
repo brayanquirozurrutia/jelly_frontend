@@ -13,6 +13,8 @@ const USER_RESET_PASSWORD_URL = import.meta.env.VITE_USERS_RESET_PASSWORD as str
 interface LoginResponse {
     id: string;
     user_admin: boolean;
+    access_token: string;
+    refresh_token: string;
 }
 
 interface CreateUserResponse {
