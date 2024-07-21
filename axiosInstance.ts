@@ -23,7 +23,7 @@ async function refreshToken() {
 function setCookie(name: string, value: string, expiresInSeconds: number) {
     const date = new Date();
     date.setTime(date.getTime() + (expiresInSeconds * 1000));
-    document.cookie = `${name}=${value}; path=/; expires=${date.toUTCString()};`;
+    document.cookie = `${name}=${value}; path=/; expires=${date.toUTCString()}; SameSite=Lax;`;
 }
 
 function getCookie(name: string) {
@@ -59,11 +59,11 @@ axiosInstance.interceptors.response.use(response => {
         const newAccessToken = await refreshToken();
 
         if (newAccessToken) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
             originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
             return axiosInstance(originalRequest);
         } else {
-            // Optionally, handle token refresh failure (e.g., logout user, show error message)
+            // Opción: Manejar la falla del refresco del token (e.g., cerrar sesión del usuario, mostrar mensaje de error)
         }
     }
 
