@@ -14,6 +14,8 @@ axiosInstance.interceptors.request.use(config => {
     const accessToken = Cookies.get('access_token');
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+        console.warn('No access token found in cookies');
     }
     return config;
 }, error => {
