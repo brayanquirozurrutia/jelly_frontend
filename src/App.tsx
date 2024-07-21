@@ -16,6 +16,12 @@ import ResetPassword from "./components/ResetPassword/ResetPassword";
 import GroupMain from "./components/Dashboard/Groups";
 import CategoryMain from "./components/Dashboard/Categories";
 
+
+
+
+
+import Phrases from "./components/Dashboard/AdminApp/Phrases";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
@@ -50,6 +56,7 @@ function App() {
                             <Route index element={<Dashboard />} />
                             <Route path="groups" element={<GroupMain />} />
                             <Route path="categories" element={<CategoryMain />} />
+                            <Route path="admin-app/phrases" element={<Phrases />} />
                         </Route>
                     </Routes>
                 </Router>

@@ -3,19 +3,21 @@ import Marquee from 'react-fast-marquee';
 import BurgerMenu from '../BurgerMenu';
 import { useMediaQuery } from 'react-responsive';
 
-// TODO: LAS FRASES DEBEN VENIR D EUN ENDPOINT PARA QUE SE PUEDNA ACTUALIZAR
+import { useQuery } from '@apollo/react-hooks';
+import { GET_BANNER_PHRASES } from '../../../graphql/app/queries';
+import { BannerPhrasesData } from '../../../types';
 
 const HeaderBanner: React.FC = () => {
-    const phrases = [
-        "BIENVENIDOS A TECITO STORE ☕",
-        "FALTAN 7 DÍAS PARA QUE JIN SALGA DEL EJÉRCITO 🥺",
-        "¿POR QUÉ TAEHYUNG ESTÁ ABRIGADO? PORQUE TAELAO' 😂",
-        "¿CUÁL ES EL COLOR DE CABELLO MÁS ICONICO DE JIMIN? 🌈",
-        "¿CUÁL ES EL MEJOR SHIP DE BTS? 🚢",
-        "QUIERES UN TÉ CON O SIN SUGA? 🍵",
-    ];
-
     const isMobile = useMediaQuery({ maxWidth: 1020 });
+
+    const {
+        error,
+        data
+    } = useQuery<BannerPhrasesData>(GET_BANNER_PHRASES);
+
+    if (error) return <p>Error: {error.message}</p>;
+
+    const phrases = data?.bannerPhrases.map(({ phrase }) => phrase) || [];
 
     return (
         <div className="bg-purple1 text-black font-bold py-3 flex items-center">
