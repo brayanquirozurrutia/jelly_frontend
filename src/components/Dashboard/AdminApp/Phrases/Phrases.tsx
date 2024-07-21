@@ -11,7 +11,7 @@ const Phrases: React.FC = () => {
         setEditDialogOpen,
         selectedObject,
         setSelectedObject,
-        endpointSuccess,
+        //endpointSuccess,
         setEndpointSuccess,
         setSnackbarOpen,
         setRefreshTable
