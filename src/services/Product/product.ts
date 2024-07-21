@@ -1,5 +1,6 @@
 import axiosInstance from '../../../axiosInstance.ts';
 import { handleAxiosError } from '../Error';
+import Cookies from "js-cookie";
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const GROUP_CREATE_URL = import.meta.env.VITE_GROUP_CREATE as string;
@@ -45,6 +46,7 @@ export const createCategory = async (data: {
             headers: {
                 'Content-Type': 'application/json',
                 'accept': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('access_token')}`,
             },
         });
         return response.data;
