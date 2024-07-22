@@ -17,7 +17,7 @@ import GroupMain from "./components/Dashboard/Groups";
 import CategoryMain from "./components/Dashboard/Categories";
 
 
-
+import CreateProduct from "./components/Dashboard/Products/CreateProduct/CreateProduct.tsx";
 
 
 import Phrases from "./components/Dashboard/AdminApp/Phrases";
@@ -57,6 +57,7 @@ function App() {
                             <Route path="groups" element={<GroupMain />} />
                             <Route path="categories" element={<CategoryMain />} />
                             <Route path="admin-app/phrases" element={<Phrases />} />
+                            <Route path="products" element={<CreateProduct />} />
                         </Route>
                     </Routes>
                 </Router>

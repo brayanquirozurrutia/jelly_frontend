@@ -8,6 +8,7 @@ export const GET_PRODUCTS = gql`
       name
       price
       image
+      discountPrice
       group {
         name
       }
@@ -27,6 +28,7 @@ export const GET_PRODUCT_DETAILS = gql`
       price
       image
       description
+      discountPrice
       group {
         name
       }

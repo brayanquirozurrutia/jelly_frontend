@@ -32,7 +32,14 @@ const ProductDetails: React.FC = () => {
                 <img src={product.image} alt={product.name} className="w-full sm:w-2/5 h-auto object-cover rounded-lg mb-4 sm:mb-0" />
                 <div className="p-4 flex-1">
                     <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-                    <p className="text-xl text-gray-900 mb-4">${product.price}</p>
+                    {product.discountPrice ? (
+                        <div className="flex items-center mb-4">
+                            <span className="text-xl font-bold text-gray-900 line-through mr-2">${product.price}</span>
+                            <span className="text-xl font-bold text-red-600">${product.discountPrice}</span>
+                        </div>
+                    ) : (
+                        <p className="text-xl text-gray-900 mb-4">${product.price}</p>
+                    )}
                     <p className="mb-4">{product.description}</p>
                     <div className="flex items-center mb-4">
                         <span className="font-semibold mr-2">Group:</span>

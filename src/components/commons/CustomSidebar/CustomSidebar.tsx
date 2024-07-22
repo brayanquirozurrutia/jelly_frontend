@@ -95,6 +95,11 @@ const CustomSidebar: React.FC<SidebarProps> = ({ open, handleDrawerToggle }) => 
             url: '/dashboard/groups'
         },
         {
+            text: 'Productos',
+            icon: <AutoAwesomeMotionIcon />,
+            url: '/dashboard/products'
+        },
+        {
             text: 'Admin',
             icon: <AutoAwesomeMotionIcon />,
             subMenuItems: [

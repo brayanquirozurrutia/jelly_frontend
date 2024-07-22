@@ -10,6 +10,7 @@ interface Product {
     name: string;
     price: number;
     image: string;
+    discountPrice?: number;
     group: {
         name: string;
     };
@@ -63,7 +64,14 @@ const Products: React.FC = () => {
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold">{product.name} - {product.group.name}</h3>
                                 <div className="mt-4 flex justify-between items-center">
-                                    <span className="text-xl font-bold text-gray-900">${product.price}</span>
+                                    {product.discountPrice ? (
+                                        <>
+                                            <span className="text-xl font-bold text-gray-900 line-through">${product.price}</span>
+                                            <span className="text-xl font-bold text-red-600">${product.discountPrice}</span>
+                                        </>
+                                    ) : (
+                                        <span className="text-xl font-bold text-gray-900">${product.price}</span>
+                                    )}
                                 </div>
                             </div>
                             <div className="bg-purple2 p-2 text-black text-center font-bold">
