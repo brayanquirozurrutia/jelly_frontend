@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(config => {
-    const accessToken = getCookie('access_token')
+    const accessToken = Cookies.get('access_token');
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
     } else {
@@ -39,6 +39,8 @@ axiosInstance.interceptors.response.use(response => {
 
                 const {access} = response.data;
 
+                Cookies.set('access_token', access, { expires: 1, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
+
                 originalRequest.headers['Authorization'] = `Bearer ${access}`;
                 return axiosInstance(originalRequest);
             }
@@ -49,12 +51,5 @@ axiosInstance.interceptors.response.use(response => {
 
     return Promise.reject(error);
 });
-
-function getCookie(name: string) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-    return null;
-}
 
 export default axiosInstance;

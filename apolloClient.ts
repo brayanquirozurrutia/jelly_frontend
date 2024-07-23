@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import Cookies from 'js-cookie';
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const CSRF_URL = import.meta.env.VITE_CSRF_URL as string;
@@ -12,13 +13,6 @@ async function fetchCsrfToken() {
     return data.csrfToken;
 }
 
-function getCookie(name: string) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-    return null;
-}
-
 const httpLink = createHttpLink({
     uri: `${API_URL}graphql`,
     credentials: 'include',
@@ -26,7 +20,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
     const csrfToken = await fetchCsrfToken();
-    const accessToken = getCookie('access_token');
+    const accessToken = Cookies.get('access_token');
 
     return {
         headers: {
