@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(response => {
 }, async error => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
         try {
@@ -35,12 +35,11 @@ axiosInstance.interceptors.response.use(response => {
             if (refreshToken) {
                 const response = await axiosInstance.post(API_JWT_REFRESH_URL, {
                     refresh: refreshToken,
-                });
+                }, { withCredentials: true });
 
                 const {access} = response.data;
-                Cookies.set('access_token', access, {expires: 1});
 
-                axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+                originalRequest.headers['Authorization'] = `Bearer ${access}`;
                 return axiosInstance(originalRequest);
             }
         } catch (e) {
