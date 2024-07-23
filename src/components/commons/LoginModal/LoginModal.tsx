@@ -22,7 +22,7 @@ import { useAuth } from "../../../auth/AuthContext.tsx";
 import { login } from "../../../services/Auth";
 import { GET_USER_DETAILS } from '../../../graphql/users/queries';
 import useLoginForm from "../../../hooks/Commons/useLoginForm.ts";
-import Cookies from "js-cookie";
+//import Cookies from "js-cookie";
 
 interface LoginModalProps {
     show: boolean;
@@ -89,11 +89,11 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
             const response = await login(data);
             const userId = response.id;
             const userAdmin = response.user_admin.toString().toLowerCase();
-            const access_token = response.access_token;
-            const refresh_token = response.refresh_token;
+            //const access_token = response.access_token;
+            //const refresh_token = response.refresh_token;
 
-            Cookies.set('access_token', access_token, { expires: 1, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
-            Cookies.set('refresh_token', refresh_token, { expires: 7, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
+            //Cookies.set('access_token', access_token, { expires: 1, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
+            //Cookies.set('refresh_token', refresh_token, { expires: 7, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
 
             sessionStorage.setItem('userId', userId);
             sessionStorage.setItem('userAdmin', userAdmin);
