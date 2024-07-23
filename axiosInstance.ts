@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(config => {
-    const accessToken = Cookies.get('access_token');
+    const accessToken = getCookie('access_token')
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
     } else {
@@ -49,5 +49,17 @@ axiosInstance.interceptors.response.use(response => {
 
     return Promise.reject(error);
 });
+
+function getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        const cookiePart = parts.pop(); // Puede ser undefined
+        if (cookiePart) {
+            return cookiePart.split(';').shift() || null;
+        }
+    }
+    return null;
+}
 
 export default axiosInstance;
