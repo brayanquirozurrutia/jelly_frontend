@@ -11,11 +11,14 @@ import { BannerPhrasesData, BannerPhrase } from '../../../../../types';
 
 interface ViewPhraseProps {
     onEdit: (object: BannerPhrase) => void;
+    refreshTable: boolean;
 }
 
 const ViewPhrase: React.FC<ViewPhraseProps> = (
     {
-        onEdit
+        onEdit,
+        refreshTable
+
     }
 ) => {
 
@@ -28,13 +31,15 @@ const ViewPhrase: React.FC<ViewPhraseProps> = (
         loading,
         data,
         error
-    }] = useLazyQuery<BannerPhrasesData>(GET_BANNER_PHRASES);
+    }] = useLazyQuery<BannerPhrasesData>(GET_BANNER_PHRASES, {
+        fetchPolicy: 'cache-and-network'
+    });
 
     useEffect(() => {
-        if (collapseOpen) {
+        if (collapseOpen || refreshTable) {
             getPhrases().then(r => r);
         }
-    }, [collapseOpen, getPhrases]);
+    }, [collapseOpen, refreshTable, getPhrases]);
 
     return (
       <div className="p-2 rounded-lg border-2 shadow-md">
@@ -95,8 +100,8 @@ const ViewPhrase: React.FC<ViewPhraseProps> = (
                                         </TableRow>
                                     ))}
                                 </TableBody>
-                            </Table>
-                        </TableContainer>
+                          </Table>
+                      </TableContainer>
                   )
               )}
           </CustomCollapse>

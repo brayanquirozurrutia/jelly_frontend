@@ -4,6 +4,7 @@ import ViewPhrase from "./View";
 import EditPhrase from "./Edit";
 import usePhraseForm from "../../../../hooks/usePhraseForm.ts";
 import type {BannerPhrase} from "../../../../types.ts";
+import CustomSnackBar from "../../../commons/CustomSnackBar";
 
 const Phrases: React.FC = () => {
     const {
@@ -11,10 +12,12 @@ const Phrases: React.FC = () => {
         setEditDialogOpen,
         selectedObject,
         setSelectedObject,
-        //endpointSuccess,
+        endpointSuccess,
         setEndpointSuccess,
         setSnackbarOpen,
-        setRefreshTable
+        setRefreshTable,
+        refreshTable,
+        snackbarOpen
     } = usePhraseForm();
 
     const handleRefreshTable = useCallback(() => {
@@ -36,9 +39,19 @@ const Phrases: React.FC = () => {
 
     return (
         <div>
-            <CreatePhrase />
+            <CustomSnackBar
+                open={snackbarOpen}
+                onClose={() => setSnackbarOpen(false)}
+                message={endpointSuccess}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                type="success"
+            />
+            <CreatePhrase
+                onCreated={handleRefreshTable}
+            />
             <ViewPhrase
                 onEdit={handleEdit}
+                refreshTable={refreshTable}
             />
             <EditPhrase
                 open={editDialogOpen}
