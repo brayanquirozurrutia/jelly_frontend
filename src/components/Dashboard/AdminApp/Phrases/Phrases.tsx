@@ -2,6 +2,7 @@ import React, {useCallback} from "react";
 import CreatePhrase from "./Create";
 import ViewPhrase from "./View";
 import EditPhrase from "./Edit";
+import DeletePhrase from "./Delete";
 import usePhraseForm from "../../../../hooks/usePhraseForm.ts";
 import type {BannerPhrase} from "../../../../types.ts";
 import CustomSnackBar from "../../../commons/CustomSnackBar";
@@ -17,7 +18,9 @@ const Phrases: React.FC = () => {
         setSnackbarOpen,
         setRefreshTable,
         refreshTable,
-        snackbarOpen
+        snackbarOpen,
+        deleteDialogOpen,
+        setDeleteDialogOpen,
     } = usePhraseForm();
 
     const handleRefreshTable = useCallback(() => {
@@ -30,9 +33,22 @@ const Phrases: React.FC = () => {
         setRefreshTable(false)
     };
 
+    const handleDelete = (object: BannerPhrase) => {
+        setSelectedObject(object);
+        setDeleteDialogOpen(true);
+        setRefreshTable(false)
+    };
+
     const handleUpdated = () => {
         setEditDialogOpen(false);
         setEndpointSuccess('Actualización exitosa');
+        setSnackbarOpen(true);
+        handleRefreshTable();
+    };
+
+    const handleDeleted = () => {
+        setDeleteDialogOpen(false);
+        setEndpointSuccess('Eliminación exitosa');
         setSnackbarOpen(true);
         handleRefreshTable();
     };
@@ -51,6 +67,7 @@ const Phrases: React.FC = () => {
             />
             <ViewPhrase
                 onEdit={handleEdit}
+                onDelete={handleDelete}
                 refreshTable={refreshTable}
             />
             <EditPhrase
@@ -58,6 +75,12 @@ const Phrases: React.FC = () => {
                 onClose={() => setEditDialogOpen(false)}
                 object={selectedObject}
                 onUpdated={handleUpdated}
+            />
+            <DeletePhrase
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                object={selectedObject}
+                onDeleted={handleDeleted}
             />
         </div>
     );
