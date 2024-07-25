@@ -8,7 +8,15 @@ import {Grid} from "@mui/material";
 import GestureIcon from '@mui/icons-material/Gesture';
 import CustomCollapse from "../../../../commons/CustomCollapse";
 
-const CreatePhrase: React.FC = () => {
+interface CreatePhraseProps {
+    onCreated: () => void;
+}
+
+const CreatePhrase: React.FC<CreatePhraseProps> = (
+    {
+        onCreated
+    }
+) => {
     const {
         phrase,
         setPhrase,
@@ -52,6 +60,7 @@ const CreatePhrase: React.FC = () => {
             await createPhrase({phrase});
             setEndpointSuccess('Frase creada con éxito');
             setPhrase('');
+            onCreated();
         } catch (error) {
             if (error instanceof Error) {
                 setEndpointError(error.message);

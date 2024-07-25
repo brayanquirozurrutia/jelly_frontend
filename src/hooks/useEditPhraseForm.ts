@@ -20,8 +20,6 @@ const useEditPhraseForm = () => {
     const {
         endpointError,
         setEndpointError,
-        endpointSuccess,
-        setEndpointSuccess,
     } = useErrorAndSuccessValidation();
 
     const {
@@ -38,10 +36,8 @@ const useEditPhraseForm = () => {
         setFocusedInput,
         endpointError,
         setEndpointError,
-        endpointSuccess,
-        setEndpointSuccess,
         loading,
-        setLoading
+        setLoading,
     }
 
 }

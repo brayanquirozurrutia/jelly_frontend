@@ -2,8 +2,10 @@ import React, {useCallback} from "react";
 import CreatePhrase from "./Create";
 import ViewPhrase from "./View";
 import EditPhrase from "./Edit";
+import DeletePhrase from "./Delete";
 import usePhraseForm from "../../../../hooks/usePhraseForm.ts";
 import type {BannerPhrase} from "../../../../types.ts";
+import CustomSnackBar from "../../../commons/CustomSnackBar";
 
 const Phrases: React.FC = () => {
     const {
@@ -11,10 +13,14 @@ const Phrases: React.FC = () => {
         setEditDialogOpen,
         selectedObject,
         setSelectedObject,
-        //endpointSuccess,
+        endpointSuccess,
         setEndpointSuccess,
         setSnackbarOpen,
-        setRefreshTable
+        setRefreshTable,
+        refreshTable,
+        snackbarOpen,
+        deleteDialogOpen,
+        setDeleteDialogOpen,
     } = usePhraseForm();
 
     const handleRefreshTable = useCallback(() => {
@@ -27,6 +33,12 @@ const Phrases: React.FC = () => {
         setRefreshTable(false)
     };
 
+    const handleDelete = (object: BannerPhrase) => {
+        setSelectedObject(object);
+        setDeleteDialogOpen(true);
+        setRefreshTable(false)
+    };
+
     const handleUpdated = () => {
         setEditDialogOpen(false);
         setEndpointSuccess('Actualización exitosa');
@@ -34,17 +46,41 @@ const Phrases: React.FC = () => {
         handleRefreshTable();
     };
 
+    const handleDeleted = () => {
+        setDeleteDialogOpen(false);
+        setEndpointSuccess('Eliminación exitosa');
+        setSnackbarOpen(true);
+        handleRefreshTable();
+    };
+
     return (
         <div>
-            <CreatePhrase />
+            <CustomSnackBar
+                open={snackbarOpen}
+                onClose={() => setSnackbarOpen(false)}
+                message={endpointSuccess}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                type="success"
+            />
+            <CreatePhrase
+                onCreated={handleRefreshTable}
+            />
             <ViewPhrase
                 onEdit={handleEdit}
+                onDelete={handleDelete}
+                refreshTable={refreshTable}
             />
             <EditPhrase
                 open={editDialogOpen}
                 onClose={() => setEditDialogOpen(false)}
                 object={selectedObject}
                 onUpdated={handleUpdated}
+            />
+            <DeletePhrase
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                object={selectedObject}
+                onDeleted={handleDeleted}
             />
         </div>
     );

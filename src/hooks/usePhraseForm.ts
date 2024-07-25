@@ -1,4 +1,5 @@
 import useEditDialogOpen from "./Commons/useEditDialogOpen";
+import useDeleteDialogOpen from "./Commons/useDeleteDialogOpen.ts";
 import useErrorAndSuccessValidation from "./Commons/useErrorAndSuccessValidation.ts";
 import useSnackbarValidation from "./Commons/useSnackbarValidation.ts";
 import useRefreshTableValidation from "./Commons/useRefreshTableValidation.ts";
@@ -16,8 +17,6 @@ const usePhraseForm = () => {
     } = useEditDialogOpen();
 
     const {
-        endpointError,
-        setEndpointError,
         endpointSuccess,
         setEndpointSuccess,
     } = useErrorAndSuccessValidation();
@@ -32,19 +31,24 @@ const usePhraseForm = () => {
         setRefreshTable,
     } = useRefreshTableValidation();
 
+    const {
+        deleteDialogOpen,
+        setDeleteDialogOpen,
+    } = useDeleteDialogOpen();
+
     return {
         editDialogOpen,
         setEditDialogOpen,
         selectedObject,
         setSelectedObject,
-        endpointError,
-        setEndpointError,
         endpointSuccess,
         setEndpointSuccess,
-        snackbarOpen,
         setSnackbarOpen,
+        setRefreshTable,
         refreshTable,
-        setRefreshTable
+        snackbarOpen,
+        deleteDialogOpen,
+        setDeleteDialogOpen,
     };
 
 }

@@ -3,19 +3,21 @@ import useViewPhraseForm from "../../../../../hooks/Commons/useViewPhraseForm.ts
 import { GET_BANNER_PHRASES } from '../../../../../graphql/app/queries.ts';
 import {useLazyQuery} from "@apollo/client";
 import React, {useEffect} from "react";
-import {IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import Skeleton from "react-loading-skeleton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { BannerPhrasesData, BannerPhrase } from '../../../../../types';
+import SkeletonTable from "../../../../commons/SkeletonTable";
+import TableCRUD from "../../../../commons/TableCRUD";
 
 interface ViewPhraseProps {
     onEdit: (object: BannerPhrase) => void;
+    onDelete: (object: BannerPhrase) => void;
+    refreshTable: boolean;
 }
 
 const ViewPhrase: React.FC<ViewPhraseProps> = (
     {
-        onEdit
+        onEdit,
+        refreshTable,
+        onDelete
     }
 ) => {
 
@@ -28,13 +30,17 @@ const ViewPhrase: React.FC<ViewPhraseProps> = (
         loading,
         data,
         error
-    }] = useLazyQuery<BannerPhrasesData>(GET_BANNER_PHRASES);
+    }] = useLazyQuery<BannerPhrasesData>(GET_BANNER_PHRASES, {
+        fetchPolicy: 'cache-and-network'
+    });
 
     useEffect(() => {
-        if (collapseOpen) {
+        if (collapseOpen || refreshTable) {
             getPhrases().then(r => r);
         }
-    }, [collapseOpen, getPhrases]);
+    }, [collapseOpen, refreshTable, getPhrases]);
+
+    const columnNames = ['ID', 'Frase'];
 
     return (
       <div className="p-2 rounded-lg border-2 shadow-md">
@@ -45,58 +51,15 @@ const ViewPhrase: React.FC<ViewPhraseProps> = (
           >
               {error && <p>Error al cargar frases {error.message}</p>}
               {loading ? (
-                  <TableContainer>
-                      <Table>
-                          <TableHead>
-                              <TableRow>
-                                  <TableCell><Skeleton /></TableCell>
-                                  <TableCell><Skeleton /></TableCell>
-                                  <TableCell><Skeleton /></TableCell>
-                              </TableRow>
-                          </TableHead>
-                          <TableBody>
-                                <TableRow>
-                                    <TableCell><Skeleton /></TableCell>
-                                    <TableCell><Skeleton /></TableCell>
-                                    <TableCell><Skeleton /></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <SkeletonTable columnCount={columnNames.length + 1} />
               ) : (
                   data && (
-                      <TableContainer>
-                          <Table>
-                              <TableHead>
-                                  <TableRow>
-                                        <TableCell>Id</TableCell>
-                                        <TableCell>Frase</TableCell>
-                                        <TableCell>Acciones</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {data.bannerPhrases.map((phrase) => (
-                                        <TableRow key={phrase.id}>
-                                            <TableCell>{phrase.id}</TableCell>
-                                            <TableCell>{phrase.phrase}</TableCell>
-                                            <TableCell>
-                                                <IconButton
-                                                    onClick={() => onEdit(phrase)}
-                                                    className="hover:text-purple1"
-                                                >
-                                                    <EditIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    className="hover:text-purple1"
-                                                >
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                      <TableCRUD
+                            columnNames={columnNames}
+                            data={data.bannerPhrases}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
+                        />
                   )
               )}
           </CustomCollapse>

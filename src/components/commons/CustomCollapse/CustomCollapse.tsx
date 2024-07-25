@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { Typography, IconButton, Collapse } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,7 +14,7 @@ const CustomCollapse: React.FC<CollapsibleHeaderProps> = ({
                                                                  label,
                                                                  initialOpen = false,
                                                                  children,
-                                                              onToggle
+                                                              onToggle,
                                                              }) => {
     const [collapseOpen, setCollapseOpen] = useState(initialOpen);
 

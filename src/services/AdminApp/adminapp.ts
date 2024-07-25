@@ -4,6 +4,7 @@ import { handleAxiosError } from '../Error';
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const CREATE_PHRASE_URL = import.meta.env.VITE_CREATE_PHRASE as string;
 const UPDATE_PHRASE_URL = import.meta.env.VITE_UPDATE_PHRASE as string;
+const DELETE_PHRASE_URL = import.meta.env.VITE_DELETE_PHRASE as string;
 
 interface PhraseResponse {
     id: string;
@@ -40,6 +41,19 @@ export const editPhrase = async (id: string, data: {
             },
         });
         return response.data;
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+}
+
+export const deletePhrase = async (id: string): Promise<void> => {
+    const url = `${API_URL}${DELETE_PHRASE_URL.replace('<int:id>', id)}`;
+    try {
+        await axiosInstance.delete(url, {
+            headers: {
+                'accept': 'application/json',
+            },
+        });
     } catch (error) {
         return handleAxiosError(error);
     }
