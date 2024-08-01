@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
 import { ObjectType } from '../../../../types';
-import BaseButton from "../../../commons/BaseButton";
+import BaseButton from "../../../commons/CustomButton";
 
 interface DeleteComponentProps {
     open: boolean;

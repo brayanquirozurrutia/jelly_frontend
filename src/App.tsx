@@ -15,12 +15,13 @@ import ActivateAccount from "./components/ActivateAccount/ActivateAccount";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import GroupMain from "./components/Dashboard/Groups";
 import CategoryMain from "./components/Dashboard/Categories";
-
-
-import CreateProduct from "./components/Dashboard/Products/CreateProduct/CreateProduct.tsx";
-
-
 import Phrases from "./components/Dashboard/AdminApp/Phrases";
+import CreateProduct from "./components/Dashboard/Products/CreateProduct";
+import ListProducts from "./components/Dashboard/Products/ListProducts";
+import EditProduct from "./components/Dashboard/Products/EditProduct";
+
+
+
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -56,8 +57,13 @@ function App() {
                             <Route index element={<Dashboard />} />
                             <Route path="groups" element={<GroupMain />} />
                             <Route path="categories" element={<CategoryMain />} />
+                            {/* admin-app */}
                             <Route path="admin-app/phrases" element={<Phrases />} />
-                            <Route path="products" element={<CreateProduct />} />
+                            <Route path="products">
+                                <Route path="create" element={<CreateProduct />} />
+                                <Route path="list" element={<ListProducts />} />
+                                <Route path="edit/:id" element={<EditProduct />} />
+                            </Route>
                         </Route>
                     </Routes>
                 </Router>

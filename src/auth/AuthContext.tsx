@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface AuthContextType {
     isLoggedIn: boolean;
-    loginContext: () => void;
+    userAdmin: boolean;
+    loginContext: (admin: boolean) => void;
     logout: () => void;
 }
 
@@ -18,14 +19,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return loggedIn ? JSON.parse(loggedIn) : false;
     });
 
-    const loginContext = () => {
+    const [userAdmin, setUserAdmin] = useState(() => {
+        const admin = sessionStorage.getItem('userAdmin');
+        return admin ? JSON.parse(admin) : false;
+    });
+
+    const loginContext = (admin: boolean) => {
         setIsLoggedIn(true);
+        setUserAdmin(admin);
         sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('userAdmin', JSON.stringify(admin));
     };
 
     const logout = () => {
         setIsLoggedIn(false);
+        setUserAdmin(false);
         sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('userAdmin');
     };
 
     useEffect(() => {
@@ -35,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [isLoggedIn]);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, loginContext, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, userAdmin, loginContext, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,44 +1,121 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    IconButton,
+    TableFooter,
+    TablePagination,
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { BannerPhrase } from '../../../types';
+import React from "react";
+import { GenericObject } from "../../../types";
+import { isImageUrl } from "../../../utils/stringUtils";
 
-interface DataTableProps {
-    data: BannerPhrase[];
-    onEdit: (object: BannerPhrase) => void;
-    onDelete: (object: BannerPhrase) => void;
+interface DataTableProps<T> {
+    data: T[];
+    onEdit: (object: T) => void;
+    onDelete: (object: T) => void;
     columnNames: string[];
+    columnKeys: (keyof T)[];
+    pagination?: {
+        count: number;
+        page: number;
+        rowsPerPage: number;
+        onPageChange: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+    };
 }
 
-const TableCRUD: React.FC<DataTableProps> = ({ data, onEdit, onDelete, columnNames }) => {
+const TableCRUD = <T extends GenericObject>(
+    {
+        data,
+        onEdit,
+        onDelete,
+        columnNames,
+        columnKeys,
+        pagination,
+    }: DataTableProps<T>) => {
+
     return (
         <TableContainer>
             <Table>
-                <TableHead>
-                    <TableRow>
+                <TableHead
+                    sx={{
+                        "& .MuiTableCell-root": {
+                            color: "black",
+                            fontWeight: "bold",
+                        },
+                    }}
+                >
+                    <TableRow
+                    >
                         {columnNames.map((name, index) => (
-                            <TableCell key={index}>{name}</TableCell>
+                            <TableCell
+                                key={index}
+                            >
+                                {name}
+                            </TableCell>
                         ))}
-                        <TableCell>Acciones</TableCell>
+                        <TableCell
+                        >Acciones
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((phrase) => (
-                        <TableRow key={phrase.id}>
-                            <TableCell>{phrase.id}</TableCell>
-                            <TableCell>{phrase.phrase}</TableCell>
+                    {data.map((item, index) => (
+                        <TableRow key={index}>
+                            {columnKeys.map((key) => (
+                                <TableCell key={key as string}>
+                                    {isImageUrl(String(item[key])) ? (
+                                        <img
+                                            src={String(item[key])}
+                                            alt="preview"
+                                            className="w-40 h-40 rounded"
+                                        />
+                                    ) : (
+                                        columnNames[columnKeys.indexOf(key)] === 'Precio' ? (
+                                            `$${String(item[key])}`
+                                        ) : (
+                                            String(item[key])
+                                        )
+                                    )}
+                                </TableCell>
+                            ))}
                             <TableCell>
-                                <IconButton onClick={() => onEdit(phrase)} className="hover:text-purple1">
+                                <IconButton onClick={() => onEdit(item)} className="hover:text-purple1">
                                     <EditIcon />
                                 </IconButton>
-                                <IconButton onClick={() => onDelete(phrase)} className="hover:text-purple1">
+                                <IconButton onClick={() => onDelete(item)} className="hover:text-purple1">
                                     <DeleteIcon />
                                 </IconButton>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
+                {pagination && (
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                count={pagination.count}
+                                page={pagination.page}
+                                rowsPerPage={pagination.rowsPerPage}
+                                onPageChange={pagination.onPageChange}
+                                rowsPerPageOptions={[pagination.rowsPerPage]}
+                                sx={{
+                                    "& .MuiTablePagination-actions button": {
+                                        color: "#a57ee8",
+                                        "&:hover": {
+                                            backgroundColor: "#f3e8ff",
+                                        },
+                                    },
+                                }}
+                            />
+                        </TableRow>
+                    </TableFooter>
+                )}
             </Table>
         </TableContainer>
     );

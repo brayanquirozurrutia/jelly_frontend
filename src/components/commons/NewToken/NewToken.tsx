@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Grid, Link as MuiLink, Collapse } from "@mui/material";
-import BaseButton from "../../commons/BaseButton";
+import BaseButton from "../../commons/CustomButton";
 import useNewTokenForm from "../../../hooks/useNewTokenForm.ts";
 import CustomAlert from "../../commons/CustomAlert";
 import { linkStyles } from "../../../utils/textFieldStyles.ts";

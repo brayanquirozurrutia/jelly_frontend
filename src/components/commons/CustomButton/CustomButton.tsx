@@ -13,7 +13,7 @@ interface ButtonProps {
     loading?: boolean;
 }
 
-const BaseButton: React.FC<ButtonProps> = (
+const CustomButton: React.FC<ButtonProps> = (
     {
         icon,
         label,
@@ -43,4 +43,4 @@ const BaseButton: React.FC<ButtonProps> = (
     );
 };
 
-export default BaseButton;
+export default CustomButton;

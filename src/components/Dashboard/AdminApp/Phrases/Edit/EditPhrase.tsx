@@ -4,18 +4,12 @@ import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material
 import CustomInput from "../../../../commons/Inputs";
 import GestureIcon from "@mui/icons-material/Gesture";
 import CustomAlert from "../../../../commons/CustomAlert";
-import BaseButton from "../../../../commons/BaseButton";
-import {BannerPhrase} from "../../../../../types.ts";
+import BaseButton from "../../../../commons/CustomButton";
+import {BannerPhrase} from "../View/ViewPhrase.types.ts";
 import {editPhrase} from "../../../../../services/AdminApp";
+import {EditNewObjectProp} from "../../../../../types.ts";
 
-interface EditPhraseProps {
-    open: boolean;
-    onClose: () => void;
-    object: BannerPhrase | null;
-    onUpdated: () => void;
-}
-
-const EditPhrase: React.FC<EditPhraseProps> = (
+const EditPhrase: React.FC<EditNewObjectProp<BannerPhrase>> = (
     {
         open,
         onClose,

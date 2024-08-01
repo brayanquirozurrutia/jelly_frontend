@@ -7,7 +7,7 @@ import CustomInput from "../../commons/Inputs";
 import Email from "@mui/icons-material/Email";
 import Lock from "@mui/icons-material/Lock";
 import TokenIcon from "@mui/icons-material/Token";
-import BaseButton from "../../commons/BaseButton";
+import BaseButton from "../../commons/CustomButton";
 import ResetPasswordNewToken from "../ResetPasswordNewToken";
 import {resetPassword} from "../../../services/Auth";
 

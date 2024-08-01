@@ -1,7 +1,8 @@
 import axios, {AxiosError} from "axios";
 
 interface ErrorResponse {
-    error: string;
+    error?: string;
+    message?: string;
 }
 
 export const handleAxiosError = (error: unknown): never => {
@@ -9,6 +10,8 @@ export const handleAxiosError = (error: unknown): never => {
         const axiosError = error as AxiosError<ErrorResponse>;
         if (axiosError.response?.data?.error) {
             throw new Error(axiosError.response.data.error);
+        } else if (axiosError.response?.data?.message) {
+            throw new Error(axiosError.response.data.message);
         } else {
             throw new Error('Ocurrió un error');
         }

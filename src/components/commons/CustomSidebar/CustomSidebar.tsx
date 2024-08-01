@@ -4,9 +4,10 @@ import { ExpandLess, ExpandMore, ChevronLeft } from '@mui/icons-material';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import CategoryIcon from '@mui/icons-material/Category';
 import GroupsIcon from '@mui/icons-material/Groups';
+import Diversity1Icon from '@mui/icons-material/Diversity1';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 interface SubMenuItem {
     text: string;
@@ -86,22 +87,31 @@ const CustomSidebar: React.FC<SidebarProps> = ({ open, handleDrawerToggle }) => 
         },
         {
             text: 'Categorías',
-            icon: <CategoryIcon />,
+            icon: <GroupsIcon />,
             url: '/dashboard/categories'
         },
         {
             text: 'Grupos',
-            icon: <GroupsIcon />,
+            icon: <Diversity1Icon />,
             url: '/dashboard/groups'
         },
         {
             text: 'Productos',
             icon: <AutoAwesomeMotionIcon />,
-            url: '/dashboard/products'
+            subMenuItems: [
+                {
+                    text: 'Crear Producto',
+                    url: '/dashboard/products/create',
+                },
+                {
+                    text: 'Listar Productos',
+                    url: '/dashboard/products/list',
+                },
+            ]
         },
         {
             text: 'Admin',
-            icon: <AutoAwesomeMotionIcon />,
+            icon: <AdminPanelSettingsIcon />,
             subMenuItems: [
                 {
                     text: 'Frases',

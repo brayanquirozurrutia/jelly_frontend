@@ -10,6 +10,8 @@ const CATEGORY_CREATE_URL = import.meta.env.VITE_CATEGORY_CREATE as string;
 const CATEGORY_UPDATE_URL = import.meta.env.VITE_CATEGORY_UPDATE as string;
 const CATEGORY_DELETE_URL = import.meta.env.VITE_CATEGORY_DELETE as string;
 const PRODUCT_CREATE_URL = import.meta.env.VITE_PRODUCT_CREATE as string;
+const PRODUCT_UPDATE_URL = import.meta.env.VITE_PRODUCT_UPDATE as string;
+const PRODUCT_DISABLE_URL = import.meta.env.VITE_PRODUCT_DISABLE as string;
 
 interface GroupOrCategoryResponse {
     id: string;
@@ -63,7 +65,7 @@ export const createProduct = async (data: {
     stock: number;
     category: string;
     group: string;
-    image_file: File;
+    image_file: File | null;
 }): Promise<void> => {
     const url = `${API_URL}${PRODUCT_CREATE_URL}`;
 
@@ -74,7 +76,10 @@ export const createProduct = async (data: {
     formData.append('stock', data.stock.toString());
     formData.append('category', data.category);
     formData.append('group', data.group);
-    formData.append('image_file', data.image_file);
+
+    if (data.image_file) {
+        formData.append('image_file', data.image_file);
+    }
 
     try {
         await axiosInstance.post(url, formData, {
@@ -88,7 +93,72 @@ export const createProduct = async (data: {
     } catch (error) {
         return handleAxiosError(error);
     }
+}
 
+export const updateProduct = async (productId: string, data: {
+    name?: string;
+    description?: string;
+    price?: number;
+    stock?: number;
+    category?: string;
+    group?: string;
+}): Promise<void> => {
+    const url = `${API_URL}${PRODUCT_UPDATE_URL.replace('<uuid:product_id>', productId)}`;
+
+    const formData = new FormData();
+
+    if (data.name) {
+        formData.append('name', data.name);
+    }
+
+    if (data.description) {
+        formData.append('description', data.description);
+    }
+
+    if (data.price) {
+        formData.append('price', data.price.toString());
+    }
+
+    if (data.stock) {
+        formData.append('stock', data.stock.toString());
+    }
+
+    if (data.category) {
+        formData.append('category', data.category);
+    }
+
+    if (data.group) {
+        formData.append('group', data.group);
+    }
+
+    try {
+        await axiosInstance.patch(url, formData, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'accept': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('access_token')}`,
+            },
+        });
+    } catch (error) {
+        return handleAxiosError(error);
+    }
+}
+
+export const disableProduct = async (productId: string): Promise<void> => {
+    const url = `${API_URL}${PRODUCT_DISABLE_URL.replace('<uuid:product_id>', productId)}`;
+    try {
+        await axiosInstance.post(url, {}, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('access_token')}`,
+            },
+        });
+    } catch (error) {
+        return handleAxiosError(error);
+    }
 }
 
 export const updateGroup = async (groupId: string, data: {

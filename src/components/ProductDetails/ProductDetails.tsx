@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import Skeleton from 'react-loading-skeleton';
 import { GET_PRODUCT_DETAILS } from '../../graphql/products/queries';
-import BaseButton from '../commons/BaseButton';
+import BaseButton from '../commons/CustomButton';
 
 const ProductDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();

@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import Email from '@mui/icons-material/Email';
 import TokenIcon from '@mui/icons-material/Token';
 
-import BaseButton from "../../commons/BaseButton";
+import BaseButton from "../../commons/CustomButton";
 import CustomInput from "../../commons/Inputs";
 import CustomSnackBar from "../../commons/CustomSnackBar";
 import { activateAccount } from "../../../services/Auth";

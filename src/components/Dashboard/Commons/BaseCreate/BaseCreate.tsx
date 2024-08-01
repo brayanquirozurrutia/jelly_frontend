@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Typography, Grid, Collapse, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import BaseButton from '../../../commons/BaseButton';
+import BaseButton from '../../../commons/CustomButton';
 import CustomSnackBar from "../../../commons/CustomSnackBar";
 import { ObjectType } from '../../../../types';
 
