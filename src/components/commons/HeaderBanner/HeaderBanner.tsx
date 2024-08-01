@@ -5,7 +5,13 @@ import { useMediaQuery } from 'react-responsive';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_BANNER_PHRASES } from '../../../graphql/app/queries';
-import { BannerPhrasesData } from '../../../types';
+
+interface BannerPhrasesData {
+    bannerPhrases: {
+        id: string;
+        phrase: string;
+    }[];
+}
 
 const HeaderBanner: React.FC = () => {
     const isMobile = useMediaQuery({ maxWidth: 1020 });
