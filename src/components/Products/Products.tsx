@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Link } from 'react-router-dom';
-import { GET_PRODUCTS } from '../../graphql/products/queries';
+import { GET_PRODUCTS_WITHOUT_PAGINATION } from '../../graphql/products/queries';
+import SiteNewsModal from "../commons/SiteNewsModal";
 
 interface Product {
     id: string;
@@ -11,6 +12,7 @@ interface Product {
     price: number;
     image: string;
     discountPrice?: number;
+    isDisabled: boolean;
     group: {
         name: string;
     };
@@ -35,7 +37,17 @@ const ProductPlaceholder: React.FC = () => (
 );
 
 const Products: React.FC = () => {
-    const { loading, error, data } = useQuery<{ listProducts: Product[] }>(GET_PRODUCTS);
+    const {
+        loading,
+        error,
+        data
+    } = useQuery<{ listProductsWithoutPagination: Product[] }>(GET_PRODUCTS_WITHOUT_PAGINATION);
+
+    const [isModalOpen, setIsModalOpen] = useState(true);
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     if (loading) {
         return (
@@ -54,13 +66,24 @@ const Products: React.FC = () => {
 
     return (
         <div className="container mx-auto px-4 py-2">
+            <SiteNewsModal
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                title="Sitio en construcción"
+                body="Estamos trabajando en la construcción de nuestro sitio web, puedes revisar nuesto catálogo de productos mientras tanto."
+            />
             <h2 className="text-2xl font-bold my-4 text-center">Nuestros productos</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {data?.listProducts.map(product => (
+                {data?.listProductsWithoutPagination.map(product => (
                     <Link to={`/product/${product.id}`} key={product.id}>
                         <div className="bg-white shadow-md rounded-lg overflow-hidden transform transition-transform
                             hover:shadow-purple1/50 hover:shadow-xl">
-                            <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className={`w-full h-48 object-cover ${product.isDisabled ? 'grayscale' : ''}`}
+                                style={{ filter: product.isDisabled ? 'grayscale(100%)' : 'none' }}
+                            />
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold">{product.name} - {product.group.name}</h3>
                                 <div className="mt-4 flex justify-between items-center">

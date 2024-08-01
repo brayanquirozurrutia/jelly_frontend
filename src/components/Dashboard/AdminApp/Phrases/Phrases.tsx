@@ -4,7 +4,7 @@ import ViewPhrase from "./View";
 import EditPhrase from "./Edit";
 import DeletePhrase from "./Delete";
 import usePhraseForm from "../../../../hooks/usePhraseForm.ts";
-import type {BannerPhrase} from "../../../../types.ts";
+import type {BannerPhrase} from "./View/ViewPhrase.types.ts";
 import CustomSnackBar from "../../../commons/CustomSnackBar";
 
 const Phrases: React.FC = () => {

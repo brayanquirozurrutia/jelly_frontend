@@ -23,7 +23,7 @@ export interface NewTokenProps {
 }
 
 export interface InputProps {
-    value: string;
+    value: string | number;
     setValue: (value: string) => void;
     valueError: string;
     setFocusedInput: (value: string | null) => void;
@@ -43,11 +43,27 @@ export interface CountDownProps {
     onCountdownEnd: () => void,
 }
 
-export interface BannerPhrase {
-    id: string;
-    phrase: string;
+// GenericObject to use in CRUD Table
+export interface GenericObject {
+    [key: string]: unknown;
 }
 
-export interface BannerPhrasesData {
-    bannerPhrases: BannerPhrase[];
+// Interface to create a new object
+export interface CreateNewObjectProps {
+    onCreated: () => void;
+}
+
+// Interface to view a new object
+export interface ViewNewObjectProp<T> {
+    onEdit: (object: T) => void;
+    onDelete: (object: T) => void;
+    refreshTable: boolean;
+}
+
+// Interface to edit a new object
+export interface EditNewObjectProp<T> {
+    open: boolean;
+    onClose: () => void;
+    object: T | null;
+    onUpdated: () => void;
 }

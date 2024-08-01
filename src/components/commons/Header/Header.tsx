@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useMediaQuery } from 'react-responsive';
-import BaseButton from "../BaseButton";
+import BaseButton from "../CustomButton";
 import LoginModal from "../LoginModal";
 
 const Header: React.FC = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Grid, Typography, FormControl, InputLabel , Select, MenuItem} from '@mui/material';
 import { validateRut, validateEmail } from '../../utils/validations';
-import BaseButton from '../commons/BaseButton';
+import BaseButton from '../commons/CustomButton';
 import CustomPopover from "../commons/Popover";
 import { capitalize } from '../../utils/stringUtils';
 import { createUser } from "../../services/Auth";

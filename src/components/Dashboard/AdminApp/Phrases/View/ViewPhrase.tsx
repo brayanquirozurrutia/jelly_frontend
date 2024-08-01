@@ -3,17 +3,12 @@ import useViewPhraseForm from "../../../../../hooks/Commons/useViewPhraseForm.ts
 import { GET_BANNER_PHRASES } from '../../../../../graphql/app/queries.ts';
 import {useLazyQuery} from "@apollo/client";
 import React, {useEffect} from "react";
-import { BannerPhrasesData, BannerPhrase } from '../../../../../types';
+import { BannerPhrasesData, BannerPhrase } from "./ViewPhrase.types.ts"
 import SkeletonTable from "../../../../commons/SkeletonTable";
 import TableCRUD from "../../../../commons/TableCRUD";
+import {ViewNewObjectProp} from "../../../../../types";
 
-interface ViewPhraseProps {
-    onEdit: (object: BannerPhrase) => void;
-    onDelete: (object: BannerPhrase) => void;
-    refreshTable: boolean;
-}
-
-const ViewPhrase: React.FC<ViewPhraseProps> = (
+const ViewPhrase: React.FC<ViewNewObjectProp<BannerPhrase>> = (
     {
         onEdit,
         refreshTable,
@@ -41,6 +36,7 @@ const ViewPhrase: React.FC<ViewPhraseProps> = (
     }, [collapseOpen, refreshTable, getPhrases]);
 
     const columnNames = ['ID', 'Frase'];
+    const columnKeys: (keyof BannerPhrase)[] = ['id', 'phrase'];
 
     return (
       <div className="p-2 rounded-lg border-2 shadow-md">
@@ -54,12 +50,13 @@ const ViewPhrase: React.FC<ViewPhraseProps> = (
                     <SkeletonTable columnCount={columnNames.length + 1} />
               ) : (
                   data && (
-                      <TableCRUD
-                            columnNames={columnNames}
-                            data={data.bannerPhrases}
-                            onEdit={onEdit}
-                            onDelete={onDelete}
-                        />
+                      <TableCRUD<BannerPhrase>
+                          columnNames={columnNames}
+                          columnKeys={columnKeys}
+                          data={data.bannerPhrases}
+                          onEdit={onEdit}
+                          onDelete={onDelete}
+                      />
                   )
               )}
           </CustomCollapse>

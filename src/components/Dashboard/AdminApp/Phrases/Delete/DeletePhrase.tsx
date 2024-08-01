@@ -1,8 +1,8 @@
-import {BannerPhrase} from "../../../../../types.ts";
+import {BannerPhrase} from "../View/ViewPhrase.types.ts";
 import React from "react";
 import useDeletePhraseForm from "../../../../../hooks/useDeletePhraseForm.ts";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
-import BaseButton from "../../../../commons/BaseButton";
+import BaseButton from "../../../../commons/CustomButton";
 import CustomAlert from "../../../../commons/CustomAlert";
 import {deletePhrase} from "../../../../../services/AdminApp";
 

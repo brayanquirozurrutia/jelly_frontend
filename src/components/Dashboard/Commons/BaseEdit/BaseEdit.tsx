@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Alert, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material';
 import { ObjectType } from '../../../../types';
-import BaseButton from "../../../commons/BaseButton";
+import BaseButton from "../../../commons/CustomButton";
 
 interface EditComponentProps {
     open: boolean;

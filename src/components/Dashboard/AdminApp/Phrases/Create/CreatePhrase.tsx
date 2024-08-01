@@ -1,18 +1,15 @@
 import React from 'react';
 import { createPhrase } from '../../../../../services/AdminApp';
 import CustomInput from "../../../../commons/Inputs";
-import BaseButton from "../../../../commons/BaseButton";
+import BaseButton from "../../../../commons/CustomButton";
 import useCreatePhraseForm from "../../../../../hooks/useCreatePhraseForm.ts";
 import CustomSnackBar from "../../../../commons/CustomSnackBar";
 import {Grid} from "@mui/material";
 import GestureIcon from '@mui/icons-material/Gesture';
 import CustomCollapse from "../../../../commons/CustomCollapse";
+import {CreateNewObjectProps} from "../../../../../types.ts";
 
-interface CreatePhraseProps {
-    onCreated: () => void;
-}
-
-const CreatePhrase: React.FC<CreatePhraseProps> = (
+const CreatePhrase: React.FC<CreateNewObjectProps> = (
     {
         onCreated
     }
@@ -50,6 +47,7 @@ const CreatePhrase: React.FC<CreatePhraseProps> = (
 
         await handleCreatePhrase(e);
     }
+
     const handleCreatePhrase = async (event: React.FormEvent) => {
         event.preventDefault();
         setLoading(true);

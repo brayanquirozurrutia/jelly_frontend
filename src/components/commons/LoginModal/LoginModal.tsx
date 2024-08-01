@@ -14,7 +14,7 @@ import {
 import { useLazyQuery } from '@apollo/client';
 import { Link as RouterLink } from 'react-router-dom';
 
-import BaseButton from '../BaseButton';
+import BaseButton from '../CustomButton';
 import CustomInput from "../Inputs";
 import CustomSnackBar from "../CustomSnackBar";
 import ResetPasswordNewToken from "../../ResetPassword/ResetPasswordNewToken";
@@ -88,18 +88,18 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose }) => {
         try {
             const response = await login(data);
             const userId = response.id;
-            const userAdmin = response.user_admin.toString().toLowerCase();
+            const userAdmin = response.user_admin
             const access_token = response.access_token;
             const refresh_token = response.refresh_token;
 
             Cookies.set('access_token', access_token, { expires: 1, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
             Cookies.set('refresh_token', refresh_token, { expires: 7, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
 
-            sessionStorage.setItem('userId', userId);
-            sessionStorage.setItem('userAdmin', userAdmin);
             await getUserDetails({ variables: { id: userId } });
-            loginContext();
+
+            loginContext(userAdmin);
             setSnackbarOpen(true);
+
             handleClose();
         } catch (error) {
             if (error instanceof Error) {
