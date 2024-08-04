@@ -59,7 +59,7 @@ const Header: React.FC = () => {
 
                     {/* Contador */}
                     <span
-                        className="bg-red-500 text-white text-xs font-semibold flex items-center justify-center w-5 h-5 rounded-full">3</span>
+                        className="bg-red-500 text-white text-xs font-semibold flex items-center justify-center w-5 h-5 rounded-full">0</span>
                 </div>
             </div>
         </header>

@@ -36,6 +36,7 @@ export interface InputProps {
     type?: string;
     maxLength?: number;
     required?: boolean;
+    endAdornment?: React.ReactNode;
 }
 
 export interface CountDownProps {

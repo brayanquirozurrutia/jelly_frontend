@@ -1,5 +1,3 @@
-import React from 'react';
-import { createProduct } from '../../../../services/Product';
 import CustomSnackBar from '../../../commons/CustomSnackBar';
 import BaseButton from '../../../commons/CustomButton/CustomButton.tsx';
 import { Button, Grid } from '@mui/material';
@@ -16,31 +14,21 @@ const CreateProduct = () => {
         name,
         setName,
         nameError,
-        setNameError,
         description,
         setDescription,
         descriptionError,
-        setDescriptionError,
         price,
         setPrice,
         priceError,
-        setPriceError,
         stock,
         setStock,
         stockError,
-        setStockError,
         endpointError,
-        setEndpointError,
         endpointSuccess,
-        setEndpointSuccess,
         loading,
-        setLoading,
         imageFile,
         handleImageChange,
         imageError,
-        validateImage,
-        resetImage,
-        setImageError,
         snackbarOpen,
         setSnackbarOpen,
         focusedInput,
@@ -48,104 +36,11 @@ const CreateProduct = () => {
         category,
         setCategory,
         categoryError,
-        setCategoryError,
         group,
         setGroup,
         groupError,
-        setGroupError,
+        handleSubmit,
     } = useCreateProduct();
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!name) {
-            setNameError('El nombre es requerido');
-            return;
-        } else if (!description) {
-            setDescriptionError('La descripción es requerida');
-            return;
-        } else if (!price) {
-            setPriceError('El precio es requerido');
-            return;
-        } else if (!stock) {
-            setStockError('El stock es requerido');
-            return;
-        } else if (!category) {
-            setCategoryError('La categoria es requerida');
-            return;
-        } else if (!group) {
-            setGroupError('El grupo es requerido');
-            return;
-        } else if (!validateImage()) {
-            return;
-        }
-
-        if (
-            nameError ||
-            descriptionError ||
-            priceError ||
-            stockError ||
-            categoryError ||
-            groupError ||
-            imageError
-        )
-            return;
-
-        setNameError('');
-        setDescriptionError('');
-        setPriceError('');
-        setStockError('');
-        setCategoryError('');
-        setGroupError('');
-        setImageError('');
-
-        await handleCreateProduct(e);
-    };
-
-    const handleCreateProduct = async (event: React.FormEvent) => {
-        event.preventDefault();
-        setLoading(true);
-        setEndpointError('');
-        setEndpointSuccess('');
-
-        try {
-            if (!category || !category.id) {
-                setCategoryError('La categoría es requerida');
-                setLoading(false);
-                return;
-            } else if (!group || !group.id) {
-                setGroupError('El grupo es requerido');
-                setLoading(false);
-                return;
-            }
-            await createProduct({
-                name,
-                description,
-                price,
-                stock,
-                category: category.id,
-                group: group.id,
-                image_file: imageFile,
-            });
-            setEndpointSuccess('Producto creado con éxito');
-            setName('');
-            setDescription('');
-            setPrice('');
-            setStock('');
-            setCategory(null);
-            setGroup(null);
-            resetImage();
-        } catch (error) {
-            if (error instanceof Error) {
-                setEndpointError(error.message);
-            } else {
-                setEndpointError('Error inesperado');
-            }
-        } finally {
-            setLoading(false);
-            setSnackbarOpen(true);
-        }
-    };
 
     return (
         <div className="p-2 rounded-lg border-2 shadow-md mb-2">

@@ -47,6 +47,12 @@ const CustomPopover: React.FC<CustomPopoverProps> = ({ popoverTitle, popoverCont
                     vertical: 'top',
                     horizontal: 'right',
                 }}
+                sx={{
+                    '& .MuiPopover-paper': {
+                        borderRadius: '8px',
+                        width: '300px',
+                    },
+                }}
             >
                 <Typography sx={{ p: 2, fontWeight: 'bold' }}>{popoverTitle}</Typography>
                 <Typography sx={{ p: 2 }}>{popoverContent}</Typography>

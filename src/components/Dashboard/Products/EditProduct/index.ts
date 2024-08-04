@@ -1,1 +1,1 @@
-export { default } from './EditProduct';
+export { default } from './BaseEditProduct.tsx';

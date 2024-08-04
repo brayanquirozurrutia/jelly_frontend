@@ -146,6 +146,7 @@ const ListProducts = () => {
                                 rowsPerPage: PAGE_SIZE,
                                 onPageChange: handlePageChange
                             }}
+                            redirectOnImageClick="/dashboard/products/edit"
                         />
                         {selectedProductToDisable && (
                             <DisableProduct

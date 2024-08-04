@@ -1,35 +1,50 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/react-hooks';
-import Skeleton from 'react-loading-skeleton';
-import { GET_PRODUCT_DETAILS } from '../../graphql/products/queries';
+import React from 'react';
 import BaseButton from '../commons/CustomButton';
+import ProductDetailsSkeleton from "./skeleton/ProductDetailsSkeleton.tsx";
+import AlbumIcon from '@mui/icons-material/Album';
+import CustomDropDown from "../commons/CustomDropDown";
+import useProductDetails from "./hooks/useProductDetails.ts";
 
 const ProductDetails: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const { loading, error, data } = useQuery(GET_PRODUCT_DETAILS, { variables: { id } });
+    const {
+        productLoading,
+        productError,
+        product,
+        images,
+        versions,
+        quantity,
+        selectedVersion,
+        stock,
+        handleVersionChange,
+        decreaseQuantity,
+        increaseQuantity,
+    } = useProductDetails();
 
-    const [quantity, setQuantity] = useState(1); // Estado para la cantidad seleccionada
+    if (productLoading || productError) return <ProductDetailsSkeleton />;
 
-    if (loading) return <Skeleton count={5} />;
-    if (error) return <p>Error :(</p>;
-
-    const product = data.getProduct;
-
-    const decreaseQuantity = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
-        }
-    };
-
-    const increaseQuantity = () => {
-        setQuantity(quantity + 1);
-    };
+    if (!product) {
+        return <p>Producto no encontrado</p>;
+    }
 
     return (
         <div className="container mx-auto px-4 sm:px-8 py-2">
             <div className="bg-white overflow-hidden flex flex-col sm:flex-row">
-                <img src={product.image} alt={product.name} className="w-full sm:w-2/5 h-auto object-cover rounded-lg mb-4 sm:mb-0" />
+                <div className="flex-1 h-[90vh] overflow-y-scroll">
+                    {/* Contenedor de imagen principal y las imágenes adicionales */}
+                    <div className="flex flex-col space-y-4">
+                        {/* Imagen principal */}
+                        <img src={product.image} alt={product.name} className="w-full h-auto object-cover rounded-lg"/>
+                        {/* Imágenes adicionales */}
+                        {images.length > 0 ? (
+                            images.map((img, index) => (
+                                <img key={index} src={img.image} alt={`Additional ${index}`}
+                                     className="w-full h-auto object-cover rounded-lg"/>
+                            ))
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                </div>
                 <div className="p-4 flex-1">
                     <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
                     {product.discountPrice ? (
@@ -48,6 +63,21 @@ const ProductDetails: React.FC = () => {
                     <div className="flex items-center mb-4">
                         <span className="font-semibold mr-2">Category:</span>
                         <span>{product.category.name}</span>
+                    </div>
+                    <div className="mb-4">
+                        <CustomDropDown
+                            label="Versión"
+                            placeholder="Selecciona una versión"
+                            items={versions}
+                            icon={AlbumIcon}
+                            selectedValue={selectedVersion}
+                            onChange={handleVersionChange}
+                        />
+                        {selectedVersion && (
+                            <p className="mt-2 text-lg font-semibold">
+                                Stock: {stock}
+                            </p>
+                        )}
                     </div>
                     {/* Botones para elegir cantidad */}
                     <div className="flex items-center mb-4">

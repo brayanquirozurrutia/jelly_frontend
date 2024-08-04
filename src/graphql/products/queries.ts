@@ -20,6 +20,16 @@ export const GET_PRODUCTS_WITHOUT_PAGINATION = gql`
   }
 `;
 
+// Query to get product ids and names
+export const GET_PRODUCT_IDS_AND_NAMES = gql`
+  query {
+    listProductsWithoutPagination {
+      id
+      name
+    }
+  }
+`;
+
 // Query to get product details
 export const GET_PRODUCT_DETAILS = gql`
   query GetProductDetails($id: ID!) {
@@ -38,6 +48,16 @@ export const GET_PRODUCT_DETAILS = gql`
       category {
         id
         name
+      }
+      images {
+        id
+        image
+      }
+      productVersion {
+        id
+        name
+        stock
+        isDisabled
       }
     }
   }
@@ -107,3 +127,11 @@ export const GET_CATEGORIES_WITHOUT_PAGINATION = gql`
         }
     }
     `;
+
+export const GET_PRODUCT_IMAGES_FILES = gql`
+    query listProductImageFileTypeByProductId($productId: ID!) {
+        listProductImageFileTypeByProductId(productId: $productId) {
+            image
+        }
+    }
+`;

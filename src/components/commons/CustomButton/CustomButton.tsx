@@ -25,7 +25,7 @@ const CustomButton: React.FC<ButtonProps> = (
     }) => {
     return (
         <button
-            className={`bg-purple1 hover:bg-purple2 text-black font-bold rounded-lg py-2 px-3 shadow-md ${className}`}
+            className={`bg-purple1 hover:bg-purple2 text-black font-bold rounded-lg py-2 px-3 shadow-md transition duration-300 ${className}`}
             onClick={onClick || onClickForm}
             disabled={disabled || loading}
         >
