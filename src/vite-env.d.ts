@@ -1,1 +1,1 @@
-/// <reference hooks="vite/client" />
+/// <reference types="vite/client" />
