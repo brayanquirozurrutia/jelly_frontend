@@ -18,11 +18,13 @@ const CustomInput: React.FC<InputProps> = (
         focusText,
         type,
         maxLength,
-        required = false
+        required = false,
+        endAdornment,
     }) => {
 
     return (
         <TextField
+            autoComplete="on"
             fullWidth
             margin="normal"
             id={id}
@@ -41,6 +43,7 @@ const CustomInput: React.FC<InputProps> = (
                         <Icon sx={{ color: focusedInput === focusText ? '#a57ee8' : '' }} />
                     </InputAdornment>
                 ),
+                endAdornment: endAdornment ? endAdornment : null
             }}
             variant="outlined"
             type={type}

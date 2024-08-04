@@ -1,16 +1,29 @@
 import useStringValidation from "../../../../../hooks/Commons/useStringValidation.ts";
 import useNumberValidation from "../../../../../hooks/Commons/useNumberValidation.ts";
-import useBooleanValidation from "../../../../../hooks/Commons/useBooleanValidation.ts";
 import useImageFileValidation from "../../../../../hooks/Commons/useImageFileValidation.ts";
-import useFocusedInputValidation from "../../../../../hooks/Commons/useFocusedInputValidation.ts";
 import {CategoryType} from "../../../Categories/category.types.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 import {GroupType} from "../../../Groups/group.types.ts";
+import useCommons from "../../../../../hooks/useCommons.ts";
+import {createProduct} from "../../../../../services/Product";
 
 const useCreateProduct = () => {
 
     const [category, setCategory] = useState<CategoryType | null>(null);
     const [group, setGroup] = useState<GroupType | null>(null);
+
+    const {
+        snackbarOpen,
+        setSnackbarOpen,
+        endpointError,
+        setEndpointError,
+        endpointSuccess,
+        setEndpointSuccess,
+        loading,
+        setLoading,
+        focusedInput,
+        setFocusedInput,
+    } = useCommons();
 
     const {
         value: categoryError,
@@ -50,27 +63,6 @@ const useCreateProduct = () => {
         setError: setStockError,
     } = useNumberValidation('stock')
 
-
-    const {
-        value: endpointError,
-        setValue: setEndpointError,
-    } = useStringValidation('endpointError')
-
-    const {
-        value: endpointSuccess,
-        setValue: setEndpointSuccess,
-    } = useStringValidation('endpointSuccess')
-
-    const {
-        value: snackbarOpen,
-        setValue: setSnackbarOpen,
-    } = useBooleanValidation('snackbarOpen')
-
-    const {
-        value: loading,
-        setValue: setLoading,
-    } = useBooleanValidation('loading')
-
     const {
         imageFile,
         imageError,
@@ -80,44 +72,117 @@ const useCreateProduct = () => {
         setImageError,
     } = useImageFileValidation();
 
-    const {
-        focusedInput,
-        setFocusedInput,
-    } = useFocusedInputValidation();
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!name) {
+            setNameError('El nombre es requerido');
+            return;
+        } else if (!description) {
+            setDescriptionError('La descripción es requerida');
+            return;
+        } else if (!price) {
+            setPriceError('El precio es requerido');
+            return;
+        } else if (!stock) {
+            setStockError('El stock es requerido');
+            return;
+        } else if (!category) {
+            setCategoryError('La categoria es requerida');
+            return;
+        } else if (!group) {
+            setGroupError('El grupo es requerido');
+            return;
+        } else if (!validateImage()) {
+            return;
+        }
+
+        if (
+            nameError ||
+            descriptionError ||
+            priceError ||
+            stockError ||
+            categoryError ||
+            groupError ||
+            imageError
+        )
+            return;
+
+        setNameError('');
+        setDescriptionError('');
+        setPriceError('');
+        setStockError('');
+        setCategoryError('');
+        setGroupError('');
+        setImageError('');
+
+        await handleCreateProduct(e);
+    };
+
+    const handleCreateProduct = async (event: React.FormEvent) => {
+        event.preventDefault();
+        setLoading(true);
+        setEndpointError('');
+        setEndpointSuccess('');
+
+        try {
+            if (!category || !category.id) {
+                setCategoryError('La categoría es requerida');
+                setLoading(false);
+                return;
+            } else if (!group || !group.id) {
+                setGroupError('El grupo es requerido');
+                setLoading(false);
+                return;
+            }
+            await createProduct({
+                name,
+                description,
+                price,
+                stock,
+                category: category.id,
+                group: group.id,
+                image_file: imageFile,
+            });
+            setEndpointSuccess('Producto creado con éxito');
+            setName('');
+            setDescription('');
+            setPrice('');
+            setStock('');
+            setCategory(null);
+            setGroup(null);
+            resetImage();
+        } catch (error) {
+            if (error instanceof Error) {
+                setEndpointError(error.message);
+            } else {
+                setEndpointError('Error inesperado');
+            }
+        } finally {
+            setLoading(false);
+            setSnackbarOpen(true);
+        }
+    };
 
     return {
         name,
         setName,
         nameError,
-        setNameError,
         description,
         setDescription,
         descriptionError,
-        setDescriptionError,
         price,
         setPrice,
         priceError,
-        setPriceError,
         stock,
         setStock,
         stockError,
-        setStockError,
-        group,
-        setGroup,
-        groupError,
-        setGroupError,
         endpointError,
-        setEndpointError,
         endpointSuccess,
-        setEndpointSuccess,
         loading,
-        setLoading,
         imageFile,
         handleImageChange,
         imageError,
-        validateImage,
-        resetImage,
-        setImageError,
         snackbarOpen,
         setSnackbarOpen,
         focusedInput,
@@ -125,7 +190,19 @@ const useCreateProduct = () => {
         category,
         setCategory,
         categoryError,
+        group,
+        setGroup,
+        groupError,
+        handleSubmit,
+        setNameError,
+        setDescriptionError,
+        setPriceError,
+        setStockError,
         setCategoryError,
+        setGroupError,
+        setEndpointError,
+        setEndpointSuccess,
+        setLoading,
     }
 };
 

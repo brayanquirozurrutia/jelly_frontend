@@ -14,6 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 import { GenericObject } from "../../../types";
 import { isImageUrl } from "../../../utils/stringUtils";
+import {Link} from "react-router-dom";
 
 interface DataTableProps<T> {
     data: T[];
@@ -27,6 +28,7 @@ interface DataTableProps<T> {
         rowsPerPage: number;
         onPageChange: (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
     };
+    redirectOnImageClick?: string;
 }
 
 const TableCRUD = <T extends GenericObject>(
@@ -37,6 +39,7 @@ const TableCRUD = <T extends GenericObject>(
         columnNames,
         columnKeys,
         pagination,
+        redirectOnImageClick,
     }: DataTableProps<T>) => {
 
     return (
@@ -70,11 +73,21 @@ const TableCRUD = <T extends GenericObject>(
                             {columnKeys.map((key) => (
                                 <TableCell key={key as string}>
                                     {isImageUrl(String(item[key])) ? (
-                                        <img
-                                            src={String(item[key])}
-                                            alt="preview"
-                                            className="w-40 h-40 rounded"
-                                        />
+                                        redirectOnImageClick ? (
+                                            <Link to={`${redirectOnImageClick}/${item.id}`}>
+                                                <img
+                                                    src={String(item[key])}
+                                                    alt="preview"
+                                                    className="w-40 h-40 rounded"
+                                                />
+                                            </Link>
+                                        ) : (
+                                            <img
+                                                src={String(item[key])}
+                                                alt="preview"
+                                                className="w-40 h-40 rounded"
+                                            />
+                                        )
                                     ) : (
                                         columnNames[columnKeys.indexOf(key)] === 'Precio' ? (
                                             `$${String(item[key])}`

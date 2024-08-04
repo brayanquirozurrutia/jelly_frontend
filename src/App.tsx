@@ -18,7 +18,8 @@ import CategoryMain from "./components/Dashboard/Categories";
 import Phrases from "./components/Dashboard/AdminApp/Phrases";
 import CreateProduct from "./components/Dashboard/Products/CreateProduct";
 import ListProducts from "./components/Dashboard/Products/ListProducts";
-import EditProduct from "./components/Dashboard/Products/EditProduct";
+import BaseEditProduct from "./components/Dashboard/Products/EditProduct";
+
 
 
 
@@ -57,12 +58,15 @@ function App() {
                             <Route index element={<Dashboard />} />
                             <Route path="groups" element={<GroupMain />} />
                             <Route path="categories" element={<CategoryMain />} />
+
                             {/* admin-app */}
                             <Route path="admin-app/phrases" element={<Phrases />} />
+
+                            {/* products */}
                             <Route path="products">
                                 <Route path="create" element={<CreateProduct />} />
                                 <Route path="list" element={<ListProducts />} />
-                                <Route path="edit/:id" element={<EditProduct />} />
+                                <Route path="edit/:id" element={<BaseEditProduct />} />
                             </Route>
                         </Route>
                     </Routes>
