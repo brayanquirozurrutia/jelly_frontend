@@ -8,6 +8,7 @@ interface ProductVersionType {
     name: string;
     stock: number;
     isDisabled: boolean;
+    image: string;
 }
 
 interface ProductType {

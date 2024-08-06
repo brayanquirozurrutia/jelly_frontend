@@ -18,6 +18,7 @@ const AddProductImage: React.FC<SelectedProduct> = ({ productId }) => {
         handleImageChange,
         handleSubmit,
         imageError,
+        imageFileName,
     } = useAddProductImage({ productId });
 
     return (
@@ -45,12 +46,13 @@ const AddProductImage: React.FC<SelectedProduct> = ({ productId }) => {
                                 buttonText="Subir Imagen"
                                 startIcon={<AddPhotoAlternateIcon/>}
                                 error={imageError}
+                                fileName={imageFileName}
                             />
                         </Grid>
                     </Grid>
                     <Grid item xs={12} className="text-right">
                         <BaseButton
-                            label="Crear Producto"
+                            label="Agregar imagen"
                             className="w-full lg:w-1/2"
                             loading={loading}
                         />

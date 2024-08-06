@@ -24,6 +24,7 @@ const useAddProductImage = ({ productId }: SelectedProduct) => {
         validateImage,
         resetImage,
         setImageError,
+        imageFileName,
     } = useImageFileValidation();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -85,6 +86,7 @@ const useAddProductImage = ({ productId }: SelectedProduct) => {
         handleImageChange,
         handleSubmit,
         imageError,
+        imageFileName,
     }
 };
 

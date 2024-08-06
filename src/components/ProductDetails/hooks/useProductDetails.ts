@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useQuery} from "@apollo/react-hooks";
 import {ProductDetailsData} from "../types/ProductDetails.types.ts";
@@ -20,7 +20,11 @@ const useProductDetails = () => {
     const [stock, setStock] = useState<number | null>(null);
     const product = productData?.getProduct;
     const images = product?.images || [];
-    const versions = product?.productVersion || [];
+    const versions = useMemo(() => product?.productVersion || [], [product]);
+    const [carouselImages, setCarouselImages] = useState<string[]>([]);
+    const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
+
+    const displayStock = stock ?? 0;
 
     const handleVersionChange = (event: SelectChangeEvent<string | null>) => {
         const selectedVersionId = event.target.value;
@@ -42,6 +46,22 @@ const useProductDetails = () => {
         setQuantity(quantity + 1);
     };
 
+    useEffect(() => {
+        const productImage = product?.image || "";
+        const versionImages = versions.map(version => version.image).filter(image => image !== null) as string[];
+
+        const allImages = [productImage, ...versionImages];
+        setCarouselImages(allImages);
+
+        // If a version is selected, set the index to that version's image
+        if (selectedVersion) {
+            const selectedVersionIndex = versions.findIndex(version => version.id === selectedVersion) + 1; // +1 to account for the product image at index 0
+            setSelectedImageIndex(selectedVersionIndex);
+        } else {
+            setSelectedImageIndex(0);
+        }
+    }, [selectedVersion, product?.image, versions]);
+
     return {
         productLoading,
         productError,
@@ -50,10 +70,13 @@ const useProductDetails = () => {
         versions,
         quantity,
         selectedVersion,
-        stock,
         handleVersionChange,
         decreaseQuantity,
         increaseQuantity,
+        selectedImageIndex,
+        setSelectedImageIndex,
+        carouselImages,
+        displayStock,
     }
 }
 
