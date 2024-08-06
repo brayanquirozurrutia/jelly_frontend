@@ -33,6 +33,7 @@ const useCreateVersion = ({ productId }: SelectedProduct) => {
         validateImage,
         resetImage,
         setImageError,
+        imageFileName,
     } = useImageFileValidation();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -117,6 +118,7 @@ const useCreateVersion = ({ productId }: SelectedProduct) => {
         loading,
         handleImageChange,
         imageError,
+        imageFileName,
     }
 }
 

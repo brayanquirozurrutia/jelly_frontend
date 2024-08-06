@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const useImageFileValidation = () => {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageError, setImageError] = useState<string>('');
+    const [imageFileName, setImageFileName] = useState<string | null>(null)
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -10,10 +11,12 @@ const useImageFileValidation = () => {
 
             if (file.type.startsWith('image/')) {
                 setImageFile(file);
+                setImageFileName(file.name);
                 setImageError('');
             } else {
                 setImageError('Solo se permiten archivos de imagen.');
                 setImageFile(null);
+                setImageFileName(null);
             }
         }
     };
@@ -30,6 +33,7 @@ const useImageFileValidation = () => {
     const resetImage = () => {
         setImageFile(null);
         setImageError('');
+        setImageFileName(null);
     };
 
     return {
@@ -39,6 +43,7 @@ const useImageFileValidation = () => {
         validateImage,
         resetImage,
         setImageError,
+        imageFileName
     };
 };
 

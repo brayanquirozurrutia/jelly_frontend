@@ -28,15 +28,15 @@ const CreateVersion = ({productId}: SelectedProduct) => {
         loading,
         handleImageChange,
         imageError,
+        imageFileName,
     } = useCreateVersion({productId});
 
     return (
-        <div className="p-2 rounded-lg border-2 shadow-md mb-2">
+        <div className="p-2 mb-2">
             <CustomCollapse
                 label="Crear versión"
                 initialOpen={false}
-                onToggle={() => {
-                }}
+                onToggle={() => {}}
             >
                 {snackbarOpen && (
                     <CustomSnackBar
@@ -84,10 +84,11 @@ const CreateVersion = ({productId}: SelectedProduct) => {
                         <Grid item xs={12} lg={6}>
                             <CustomInputFile
                                 onChange={handleImageChange}
-                                id="file-input"
+                                id="create-version"
                                 buttonText="Subir Imagen"
                                 startIcon={<AddPhotoAlternateIcon/>}
                                 error={imageError}
+                                fileName={imageFileName}
                             />
                         </Grid>
                         <Grid item xs={12} className="text-right">

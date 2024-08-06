@@ -58,6 +58,7 @@ export const GET_PRODUCT_DETAILS = gql`
         name
         stock
         isDisabled
+        image
       }
     }
   }

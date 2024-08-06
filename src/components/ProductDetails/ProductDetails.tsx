@@ -4,6 +4,8 @@ import ProductDetailsSkeleton from "./skeleton/ProductDetailsSkeleton.tsx";
 import AlbumIcon from '@mui/icons-material/Album';
 import CustomDropDown from "../commons/CustomDropDown";
 import useProductDetails from "./hooks/useProductDetails.ts";
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const ProductDetails: React.FC = () => {
     const {
@@ -14,10 +16,13 @@ const ProductDetails: React.FC = () => {
         versions,
         quantity,
         selectedVersion,
-        stock,
         handleVersionChange,
         decreaseQuantity,
         increaseQuantity,
+        selectedImageIndex,
+        setSelectedImageIndex,
+        carouselImages,
+        displayStock,
     } = useProductDetails();
 
     if (productLoading || productError) return <ProductDetailsSkeleton />;
@@ -32,8 +37,21 @@ const ProductDetails: React.FC = () => {
                 <div className="flex-1 h-[90vh] overflow-y-scroll">
                     {/* Contenedor de imagen principal y las imágenes adicionales */}
                     <div className="flex flex-col space-y-4">
-                        {/* Imagen principal */}
-                        <img src={product.image} alt={product.name} className="w-full h-auto object-cover rounded-lg"/>
+                        {/* Imagen principal e imágenes de versiones */}
+                        <Carousel
+                            showThumbs={false}
+                            showStatus={false}
+                            infiniteLoop={false}
+                            autoPlay={false}
+                            selectedItem={selectedImageIndex}
+                            onChange={(index) => setSelectedImageIndex(index)}
+                        >
+                            {carouselImages.map((src, index) => (
+                                <div key={index}>
+                                    <img src={src} alt={`Producto ${index}`} className="w-full h-auto object-cover rounded-lg" />
+                                </div>
+                            ))}
+                        </Carousel>
                         {/* Imágenes adicionales */}
                         {images.length > 0 ? (
                             images.map((img, index) => (
@@ -57,11 +75,11 @@ const ProductDetails: React.FC = () => {
                     )}
                     <p className="mb-4">{product.description}</p>
                     <div className="flex items-center mb-4">
-                        <span className="font-semibold mr-2">Group:</span>
+                        <span className="font-semibold mr-2">Grupo:</span>
                         <span>{product.group.name}</span>
                     </div>
                     <div className="flex items-center mb-4">
-                        <span className="font-semibold mr-2">Category:</span>
+                        <span className="font-semibold mr-2">Categoría:</span>
                         <span>{product.category.name}</span>
                     </div>
                     <div className="mb-4">
@@ -74,9 +92,12 @@ const ProductDetails: React.FC = () => {
                             onChange={handleVersionChange}
                         />
                         {selectedVersion && (
-                            <p className="mt-2 text-lg font-semibold">
-                                Stock: {stock}
-                            </p>
+                            <div className="mt-2 text-lg font-semibold">
+                                <p>Stock: {displayStock}</p>
+                                {displayStock <= 2 && displayStock > 0 && (
+                                    <p className="text-red-600">¡Últimas unidades!</p>
+                                )}
+                            </div>
                         )}
                     </div>
                     {/* Botones para elegir cantidad */}

@@ -9,6 +9,7 @@ interface CustomInputFileProps {
     buttonStyle?: object;
     startIcon?: React.ReactNode;
     error?: string;
+    fileName?: string | null;
 }
 
 const CustomInputFile: React.FC<CustomInputFileProps> = ({
@@ -18,6 +19,7 @@ const CustomInputFile: React.FC<CustomInputFileProps> = ({
                                                              buttonStyle,
                                                              startIcon,
                                                              error,
+    fileName
                                                          }) => {
     return (
         <div>
@@ -50,6 +52,7 @@ const CustomInputFile: React.FC<CustomInputFileProps> = ({
                     {buttonText}
                 </Button>
             </label>
+            {fileName && <p className="mt-2 text-gray-700">Archivo seleccionado: {fileName}</p>}
             {error && <p className="text-red-500">{error}</p>}
         </div>
     );
