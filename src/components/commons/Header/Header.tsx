@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faShoppingCart, faTachometerAlt, faUser, faUserCircle} from '@fortawesome/free-solid-svg-icons';
 import { useMediaQuery } from 'react-responsive';
 import BaseButton from "../CustomButton";
 import LoginModal from "../LoginModal";
+import {useAuth} from "../../../auth/AuthContext.tsx";
 
 const Header: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
+    const { isLoggedIn, userAdmin } = useAuth();
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -46,7 +48,27 @@ const Header: React.FC = () => {
 
                 {/* Inicio de sesión */}
                 <div className="w-full md:w-auto xl:w-auto flex items-center justify-center md:justify-center xl:justify-start space-x-2">
-                    <BaseButton icon={faUser} label="Iniciar sesión" onClick={handleShowModal} className="w-100"/>
+                    {!isLoggedIn ? (
+                        <BaseButton icon={faUser} label="Iniciar sesión" onClick={handleShowModal} className="w-100"/>
+                    ) : (
+                        <>
+                            {userAdmin ? (
+                                <BaseButton
+                                    icon={faTachometerAlt}
+                                    label="Dashboard"
+                                    onClick={() => window.location.href = '/dashboard'}
+                                    className="w-100"
+                                />
+                            ) : (
+                                <BaseButton
+                                    icon={faUserCircle}
+                                    label="Mi perfil"
+                                    onClick={() => window.location.href = '/'}
+                                    className="w-100"
+                                />
+                            )}
+                        </>
+                    )}
                 </div>
                 <LoginModal show={showModal} handleClose={handleCloseModal} />
 

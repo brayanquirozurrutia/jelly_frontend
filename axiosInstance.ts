@@ -1,27 +1,14 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const API_JWT_REFRESH_URL = import.meta.env.VITE_JWT_REFRESH as string;
 
-
 const axiosInstance = axios.create({
     baseURL: API_URL,
-    withCredentials: true,
+    withCredentials: true, // Asegura que las cookies se envían con las solicitudes
 });
 
-axiosInstance.interceptors.request.use(config => {
-    const accessToken = Cookies.get('access_token');
-    if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-    } else {
-        console.warn('No access token found in cookies');
-    }
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
-
+// Interceptor de respuestas para manejar errores de autenticación y refresh de tokens
 axiosInstance.interceptors.response.use(response => {
     return response;
 }, async error => {
@@ -31,19 +18,11 @@ axiosInstance.interceptors.response.use(response => {
         originalRequest._retry = true;
 
         try {
-            const refreshToken = Cookies.get('refresh_token');
-            if (refreshToken) {
-                const response = await axiosInstance.post(API_JWT_REFRESH_URL, {
-                    refresh: refreshToken,
-                }, { withCredentials: true });
+            // Realiza una solicitud para refrescar el token
+            await axios.post(API_JWT_REFRESH_URL, {}, { withCredentials: true });
 
-                const {access} = response.data;
-
-                Cookies.set('access_token', access, { expires: 1, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
-
-                originalRequest.headers['Authorization'] = `Bearer ${access}`;
-                return axiosInstance(originalRequest);
-            }
+            // El backend se encarga de gestionar las cookies y enviar el nuevo token de acceso
+            return axiosInstance(originalRequest);
         } catch (e) {
             return Promise.reject(e);
         }
