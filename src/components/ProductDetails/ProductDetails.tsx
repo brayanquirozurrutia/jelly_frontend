@@ -97,6 +97,9 @@ const ProductDetails: React.FC = () => {
                                 {displayStock <= 2 && displayStock > 0 && (
                                     <p className="text-red-600">¡Últimas unidades!</p>
                                 )}
+                                {displayStock === 0 && (
+                                    <p className="text-red-600">Sin stock</p>
+                                )}
                             </div>
                         )}
                     </div>
