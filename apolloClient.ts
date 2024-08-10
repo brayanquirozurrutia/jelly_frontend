@@ -8,18 +8,21 @@ const CSRF_URL = import.meta.env.VITE_CSRF_URL as string;
 // Obtener el CSRF Token de las cookies
 const getCsrfToken = () => {
     const match = document.cookie.split('; ').find(row => row.startsWith('csrftoken='));
+    console.log(match);
     return match ? match.split('=')[1] : '';
 };
 
 // Verificar si el CSRF Token es válido
 const isCsrfTokenValid = () => {
     const csrfToken = getCsrfToken();
+    console.log(csrfToken);
     return !!csrfToken;
 };
 
 // Obtener un nuevo token CSRF si no es válido
 const fetchCsrfToken = async () => {
     const response = await fetch(`${API_URL}${CSRF_URL}`,{ credentials: 'include' });
+    console.log(response);
     if (response.ok) {
         return getCsrfToken();
     }
@@ -35,6 +38,7 @@ const httpLink = createHttpLink({
 // Configuración del contexto para incluir el token CSRF
 const authLink = setContext(async (_, { headers }) => {
     let csrfToken = getCsrfToken();
+    console.log(csrfToken);
 
     if (!isCsrfTokenValid()) {
         csrfToken = await fetchCsrfToken();
@@ -62,7 +66,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     }
 
     if (networkError) {
-        console.error('[Network error]');
+        console.error('[Network error]', networkError);
     }
 });
 
