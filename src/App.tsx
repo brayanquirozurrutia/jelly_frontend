@@ -44,18 +44,15 @@ function App() {
                 if (!hasRendered) {
                     const response = await fetch(`${API_URL}${CSRF_URL}`, {
                         credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
                     });
 
-                    console.log('Response Status:', response.status);
-                    console.log('Response Headers:', response.headers);
-
                     if (!response.ok) {
-                        throw new Error('Failed to fetch CSRF token');
+                        new Error('Failed to fetch CSRF token');
                     }
-
-                    // If you need the token itself
-                    const token = await response.text(); // Or `await response.json()` depending on the response format
-                    console.log('CSRF Token:', token);
 
                     sessionStorage.setItem('hasRendered', 'true');
                 }
@@ -66,7 +63,6 @@ function App() {
                 console.error('Error fetching CSRF token: ', error);
             }
         };
-
 
         fetchCsrfToken().then(r => r);
     }, []);
