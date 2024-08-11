@@ -25,8 +25,6 @@ import BaseEditProduct from "./components/Dashboard/Products/EditProduct";
 const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
 const CSRF_URL = import.meta.env.VITE_CSRF_URL as string;
 
-
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
@@ -60,7 +58,7 @@ function App() {
                 const apolloClient = createApolloClient();
                 setClient(apolloClient);
             } catch (error) {
-                console.error('Error fetching CSRF token: ', error);
+                console.error('Error fetching CSRF token');
             }
         };
 
