@@ -56,7 +56,7 @@ function App() {
                 const apolloClient = createApolloClient();
                 setClient(apolloClient);
             } catch (error) {
-                console.error('Error fetching CSRF token:');
+                console.error('Error fetching CSRF token: ', error);
             }
         };
 
