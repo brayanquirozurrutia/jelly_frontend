@@ -1,6 +1,8 @@
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import client from '../apolloClient';
+import {createApolloClient} from "../apolloClient.ts";
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme.ts';
 
@@ -20,7 +22,8 @@ import CreateProduct from "./components/Dashboard/Products/CreateProduct";
 import ListProducts from "./components/Dashboard/Products/ListProducts";
 import BaseEditProduct from "./components/Dashboard/Products/EditProduct";
 
-
+const API_URL = import.meta.env.VITE_BASE_BACKEND_URL as string;
+const CSRF_URL = import.meta.env.VITE_CSRF_URL as string;
 
 
 
@@ -28,6 +31,42 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 function App() {
+    const [
+        client,
+        setClient
+    ] = useState<ApolloClient<NormalizedCacheObject> | null>(null);
+
+    useEffect(() => {
+        const fetchCsrfToken = async () => {
+            try {
+                const hasRendered = sessionStorage.getItem('hasRendered');
+
+                if (!hasRendered) {
+                    const response = await fetch(`${API_URL}${CSRF_URL}`, {
+                        credentials: 'include',
+                    });
+
+                    if (!response.ok) {
+                        new Error('Failed to fetch CSRF token');
+                    }
+
+                    sessionStorage.setItem('hasRendered', 'true');
+                }
+
+                const apolloClient = createApolloClient();
+                setClient(apolloClient);
+            } catch (error) {
+                console.error('Error fetching CSRF token:');
+            }
+        };
+
+        fetchCsrfToken().then(r => r);
+    }, []);
+
+    if (!client) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
