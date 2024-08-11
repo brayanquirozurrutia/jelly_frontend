@@ -12,6 +12,8 @@ export const handleAxiosError = (error: unknown): never => {
             throw new Error(axiosError.response.data.error);
         } else if (axiosError.response?.data?.message) {
             throw new Error(axiosError.response.data.message);
+        } else if (axiosError.response?.status === 429) {
+            throw new Error('Demasiadas solicitudes, intente nuevamente en unos minutos');
         } else {
             throw new Error('Ocurrió un error');
         }
