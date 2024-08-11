@@ -46,9 +46,16 @@ function App() {
                         credentials: 'include',
                     });
 
+                    console.log('Response Status:', response.status);
+                    console.log('Response Headers:', response.headers);
+
                     if (!response.ok) {
-                        new Error('Failed to fetch CSRF token');
+                        throw new Error('Failed to fetch CSRF token');
                     }
+
+                    // If you need the token itself
+                    const token = await response.text(); // Or `await response.json()` depending on the response format
+                    console.log('CSRF Token:', token);
 
                     sessionStorage.setItem('hasRendered', 'true');
                 }
@@ -59,6 +66,7 @@ function App() {
                 console.error('Error fetching CSRF token: ', error);
             }
         };
+
 
         fetchCsrfToken().then(r => r);
     }, []);
