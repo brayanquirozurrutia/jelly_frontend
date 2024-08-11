@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
-      sourcemap: !isProduction,
+      sourcemap: isProduction,
     },
   };
 });
