@@ -48,7 +48,8 @@ const ProductDetails: React.FC = () => {
                         >
                             {carouselImages.map((src, index) => (
                                 <div key={index}>
-                                    <img src={src} alt={`Producto ${index}`} className="w-full h-auto object-cover rounded-lg" />
+                                    <img src={src} alt={`Producto ${index}`}
+                                         className="w-full h-auto object-cover rounded-lg"/>
                                 </div>
                             ))}
                         </Carousel>
