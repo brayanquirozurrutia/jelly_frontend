@@ -1,30 +1,82 @@
-# React + TypeScript + Vite
+# Proyecto Frontend con React, Vite, TypeScript y Tailwind CSS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un proyecto de frontend desarrollado con React, utilizando Vite como herramienta de construcción, TypeScript para el tipado estático y Tailwind CSS para los estilos.
 
-Currently, two official plugins are available:
+## Estructura del Proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+El proyecto está estructurado de la siguiente manera:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```plaintext
+.
+├── public/
+├── src
+│   ├── components/
+│   │   └── Hello.tsx
+│   ├── graphql/
+│   ├── hooks/
+│   ├── layouts/
+│   ├── services/
+│   ├── utils/
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── tailwind.css
+│   ├── theme.ts
+│   ├── types.ts
+│   └── vite-env.d.ts
+├── .dockerignore
+├── .env
+├── .eslintrc.js
+├── .gitignore
+├── apolloClient.ts
+├── axiosInstance.ts
+├── docker-compose.yml
+├── Dockerfile
+├── index.html
+├── nginx.conf
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── README.md
+├── tailwind.config.js
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Prerequisitos
+
+Para poder ejecutar el proyecto, es necesario tener instalado Node.js y npm.
+
+Si usas Docker, también necesitarás tener instalado Docker y Docker Compose.
+
+## Scripts
+
+### `npm install`
+
+Instala las dependencias del proyecto.
+
+### `npm run dev`
+
+Inicia el servidor de desarrollo.
+
+### `npm run build`
+
+Construye la aplicación para producción.
+
+### `npm run serve`
+
+Inicia un servidor local para previsualizar la aplicación construida.
+
+## Levantar con Docker
+
+Para levantar la aplicación con Docker, ejecutar los siguientes comandos:
+
+```bash
+docker-compose build
+
+docker-compose up
+```
+
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).

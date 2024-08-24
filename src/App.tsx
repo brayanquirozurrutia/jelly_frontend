@@ -27,6 +27,7 @@ const CSRF_URL = import.meta.env.VITE_CSRF_URL as string;
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import Skeleton from "react-loading-skeleton";
 
 function App() {
     const [
@@ -66,7 +67,49 @@ function App() {
     }, []);
 
     if (!client) {
-        return <div>Loading...</div>;
+        return (
+            <div className="container mx-auto px-4 sm:px-8 py-4">
+                <div className="bg-white shadow-lg rounded-lg p-8">
+                    {/* Skeleton para el título principal */}
+                    <div className="mb-6">
+                        <Skeleton height={60} width={`70%`}/>
+                    </div>
+
+                    {/* Skeleton para subtítulos */}
+                    <div className="mb-4">
+                        <Skeleton height={35} width={`50%`}/>
+                    </div>
+
+                    {/* Skeleton para bloques de texto */}
+                    <div className="mb-8 space-y-6">
+                        <Skeleton count={5} height={22} width={`95%`}/>
+                    </div>
+
+                    {/* Skeleton para una imagen o media */}
+                    <div className="mb-8">
+                        <Skeleton height={300} width={`100%`}/>
+                    </div>
+
+                    {/* Skeleton para una sección de información adicional */}
+                    <div className="mb-8">
+                        <Skeleton height={200} width={`100%`}/>
+                    </div>
+
+                    {/* Skeleton para una lista de elementos */}
+                    <div className="mb-8 space-y-4">
+                        <Skeleton height={40} width={`100%`}/>
+                        <Skeleton height={40} width={`100%`}/>
+                        <Skeleton height={40} width={`100%`}/>
+                    </div>
+
+                    {/* Skeleton para botones */}
+                    <div className="flex space-x-6 mt-8">
+                        <Skeleton height={60} width={`48%`}/>
+                        <Skeleton height={60} width={`48%`}/>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -75,37 +118,37 @@ function App() {
                 <Router>
                     <Routes>
                         <Route path="/activate-account" element={
-                            <ActivateAccount />
-                        } />
+                            <ActivateAccount/>
+                        }/>
                         <Route path="/reset-password" element={
-                            <ResetPassword />
-                        } />
+                            <ResetPassword/>
+                        }/>
                         <Route path="/" element={
                             <CarouselLayout>
-                                <Products />
+                                <Products/>
                             </CarouselLayout>
-                        } />
+                        }/>
                         <Route path="/product/:id" element={
                             <NoCarouselLayout>
-                                <ProductDetails />
+                                <ProductDetails/>
                             </NoCarouselLayout>
-                        } />
+                        }/>
                         <Route path="/create-account" element={
                             <NoCarouselLayout>
-                                <CreateAccount />
+                                <CreateAccount/>
                             </NoCarouselLayout>
-                        } />
-                        <Route path="/dashboard" element={<DashboardLayout />}>
-                            <Route index element={<Dashboard />} />
-                            <Route path="groups" element={<GroupMain />} />
-                            <Route path="categories" element={<CategoryMain />} />
+                        }/>
+                        <Route path="/dashboard" element={<DashboardLayout/>}>
+                            <Route index element={<Dashboard/>}/>
+                            <Route path="groups" element={<GroupMain/>}/>
+                            <Route path="categories" element={<CategoryMain/>}/>
 
                             {/* admin-app */}
-                            <Route path="admin-app/phrases" element={<Phrases />} />
+                            <Route path="admin-app/phrases" element={<Phrases/>}/>
 
                             {/* products */}
                             <Route path="products">
-                                <Route path="create" element={<CreateProduct />} />
+                                <Route path="create" element={<CreateProduct/>}/>
                                 <Route path="list" element={<ListProducts />} />
                                 <Route path="edit/:id" element={<BaseEditProduct />} />
                             </Route>
